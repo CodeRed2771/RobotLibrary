@@ -34,7 +34,6 @@ public class RemoteDouble implements SubsocketListener, ConnectionListener {
             subsocket = Connection.getInstance().getRootSubsocket().enableMultiplexing().createNewRoute(subsocketPath);
             if (mode == MODE.REMOTE) {
                 val = initialValue;
-                update();
             }
             subsocket.addListener(this);
         } catch (NotMultiplexedException ex) {
@@ -42,6 +41,18 @@ public class RemoteDouble implements SubsocketListener, ConnectionListener {
             ex.printStackTrace();
         }
         Connection.addConnectionListener(this);
+    }
+        
+    public RemoteDouble(String subsocketPath, double initialValue) throws InvalidRouteException {
+        this(subsocketPath, MODE.REMOTE, initialValue);
+    }
+
+    public RemoteDouble(String subsocketPath, MODE mode) throws InvalidRouteException {
+        this(subsocketPath, mode, 0);
+    }
+
+    public RemoteDouble(String subsocketPath) throws InvalidRouteException {
+        this(subsocketPath, MODE.REMOTE, 0);
     }
 
     private void updateValue(double value) {
@@ -60,18 +71,6 @@ public class RemoteDouble implements SubsocketListener, ConnectionListener {
         listeners.remove(rdl);
     }
 
-    public RemoteDouble(String subsocketPath, double initialValue) throws InvalidRouteException {
-        this(subsocketPath, MODE.REMOTE, initialValue);
-    }
-
-    public RemoteDouble(String subsocketPath, MODE mode) throws InvalidRouteException {
-        this(subsocketPath, mode, 0);
-    }
-
-    public RemoteDouble(String subsocketPath) throws InvalidRouteException {
-        this(subsocketPath, MODE.REMOTE, 0);
-    }
-
     public void setValue(double value) throws InvalidModeException {
         if (mode == MODE.REMOTE) {
             updateValue(value);
@@ -86,15 +85,11 @@ public class RemoteDouble implements SubsocketListener, ConnectionListener {
     private void update() {
         if (mode == MODE.REMOTE) {
             subsocket.sendData(PrimitiveSerializer.toByteArray(val));
-            if ("root.overridevalue.original".equals(subsocket.mapCompleteRoute())) {
-                Debug.println("SENT UPDATE: " + val, Debug.EXTENDED);
-            }
         }
     }
 
     @Override
     public void connected() {
-        System.out.println("NOTIFICATION");
         if (mode == MODE.REMOTE) {
             update();
         }
@@ -109,7 +104,6 @@ public class RemoteDouble implements SubsocketListener, ConnectionListener {
     public void incomingData(byte[] data, Subsocket subsocket) {
         if (subsocket == this.subsocket) {
             updateValue(PrimitiveSerializer.bytesToDouble(data));
-            Debug.println("DOUBLE UPDATE: " + val, Debug.EXTENDED);
         }
     }
 

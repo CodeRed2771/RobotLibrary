@@ -8,8 +8,8 @@ import com.coderedrobotics.libs.dashboard.communications.Subsocket;
  *
  * @author Michael Spoehr
  * @since Dash 3.0
- * @see Subsocket#addListener(com.coderedrobotics.libs.dashboard.communications.listeners.SubsocketListener) 
- * @see Subsocket#removeListener(com.coderedrobotics.libs.dashboard.communications.listeners.SubsocketListener) 
+ * @see Subsocket#addListener(com.coderedrobotics.dashboard.communications.listeners.SubsocketListener) 
+ * @see Subsocket#removeListener(com.coderedrobotics.dashboard.communications.listeners.SubsocketListener) 
  */
 public interface SubsocketListener {
 

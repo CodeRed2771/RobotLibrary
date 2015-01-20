@@ -34,7 +34,6 @@ public class RemoteBoolean implements SubsocketListener, ConnectionListener {
             subsocket = Connection.getInstance().getRootSubsocket().enableMultiplexing().createNewRoute(subsocketPath);
             if (mode == MODE.REMOTE) {
                 val = initialValue;
-                update();
             }
             subsocket.addListener(this);
         } catch (NotMultiplexedException ex) {

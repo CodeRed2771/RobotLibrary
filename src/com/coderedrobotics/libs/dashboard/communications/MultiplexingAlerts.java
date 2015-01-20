@@ -7,7 +7,7 @@ import com.coderedrobotics.libs.dashboard.communications.listeners.MultiplexingL
  * Alerts MultiplexingListeners to a change in the network tree. Events: Route
  * added, Route removed, Multiplexing Enabled on any route, Multiplexing
  * Disabled on any route. Any object can implement the MultiplexingListener
- * interface, call {@link MultiplexingAlerts#addListener(com.coderedrobotics.libs.dashboard.communications.listeners.MultiplexingListener)}, and receive MultiplexingAlerts.
+ * interface, call {@link MultiplexingAlerts#addListener(com.coderedrobotics.dashboard.communications.listeners.MultiplexingListener)}, and receive MultiplexingAlerts.
  *
  * @author Michael Spoehr
  * @since Dash 3.0

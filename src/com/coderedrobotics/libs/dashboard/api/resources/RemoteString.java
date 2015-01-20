@@ -34,7 +34,6 @@ public class RemoteString implements SubsocketListener, ConnectionListener {
             subsocket = Connection.getInstance().getRootSubsocket().enableMultiplexing().createNewRoute(subsocketPath);
             if (mode == MODE.REMOTE) {
                 val = initialValue;
-                update();
             }
             subsocket.addListener(this);
         } catch (NotMultiplexedException ex) {
@@ -42,6 +41,18 @@ public class RemoteString implements SubsocketListener, ConnectionListener {
             ex.printStackTrace();
         }
         Connection.addConnectionListener(this);
+    }
+    
+    public RemoteString(String subsocketPath, String initialValue) throws InvalidRouteException {
+        this(subsocketPath, MODE.REMOTE, initialValue);
+    }
+
+    public RemoteString(String subsocketPath, MODE mode) throws InvalidRouteException {
+        this(subsocketPath, mode, "");
+    }
+
+    public RemoteString(String subsocketPath) throws InvalidRouteException {
+        this(subsocketPath, MODE.REMOTE, "");
     }
 
     private void updateValue(String value) {
@@ -58,18 +69,6 @@ public class RemoteString implements SubsocketListener, ConnectionListener {
 
     public void removeListener(RemoteStringListener rsl) {
         listeners.remove(rsl);
-    }
-
-    public RemoteString(String subsocketPath, String initialValue) throws InvalidRouteException {
-        this(subsocketPath, MODE.REMOTE, initialValue);
-    }
-
-    public RemoteString(String subsocketPath, MODE mode) throws InvalidRouteException {
-        this(subsocketPath, mode, "");
-    }
-
-    public RemoteString(String subsocketPath) throws InvalidRouteException {
-        this(subsocketPath, MODE.REMOTE, "");
     }
 
     public void setValue(String value) throws InvalidModeException {

@@ -6,9 +6,9 @@ package com.coderedrobotics.libs.dashboard.communications.listeners;
  *
  * @author Michael Spoehr
  * @see
- * com.coderedrobotics.libs.dashboard.communications.Connection#addConnectionListener(com.coderedrobotics.libs.dashboard.communications.listeners.ConnectionListener)
+ * com.coderedrobotics.dashboard.communications.Connection#addConnectionListener(com.coderedrobotics.dashboard.communications.listeners.ConnectionListener)
  * @see
- * com.coderedrobotics.libs.dashboard.communications.Connection#removeConnectionListener(com.coderedrobotics.libs.dashboard.communications.listeners.ConnectionListener)
+ * com.coderedrobotics.dashboard.communications.Connection#removeConnectionListener(com.coderedrobotics.dashboard.communications.listeners.ConnectionListener)
  * @since Dash 3.0
  */
 public interface ConnectionListener {

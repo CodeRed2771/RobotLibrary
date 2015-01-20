@@ -71,7 +71,7 @@ class MultiplexingManager implements SubsocketListener, MultiplexingListener {
             Connection.getInstance().disconnect(); // writing the bye code will fail, so this forces reconnect();
             return;
         }
-        
+
         if (mode == Mode.SYNC) {
             sync(data);
         } else {
@@ -126,7 +126,7 @@ class MultiplexingManager implements SubsocketListener, MultiplexingListener {
             Logger.getLogger(MultiplexingManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     void sendMultiplexingActions() {
         for (MPLXAction action : multiplexActions.getArrayList()) {
             control.sendMultiplexAction(action);
@@ -153,7 +153,11 @@ class MultiplexingManager implements SubsocketListener, MultiplexingListener {
         }
 
         public ArrayList<MPLXAction> getArrayList() {
-            return data;
+            ArrayList<MPLXAction> actions = new ArrayList<>();
+            for (MPLXAction action : data) {
+                actions.add(action);
+            }
+            return actions;
         }
 
         public boolean contains(MPLXAction action) {

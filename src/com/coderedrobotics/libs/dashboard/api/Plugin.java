@@ -34,7 +34,7 @@ import java.net.URL;
  *
  * <p>
  * Other hooks for plugins may be found in the {@link
- * com.coderedrobotics.libs.dashboard.PluginHooks
+ * com.coderedrobotics.dashboard.PluginHooks
  * PluginHooks} class.
  *
  * @author Michael Spoehr
