@@ -4,12 +4,11 @@ package com.coderedrobotics.libs.HID;
  *
  * @author Austin
  */
-public class LogitechF310 extends HID {
+public class LegacyLogitechF310 extends HID {
 
-    public static final Axis STICK_LEFT_X = new Axis(0, 0.02);
-    public static final Axis STICK_LEFT_Y = new Axis(1, 0.02);
-    public static final Axis TRIGGER_RIGHT_AXIS = new Axis(2);
-    public static final Axis TRIGGER_LEFT_AXIS = new Axis(3);
+    public static final Axis STICK_LEFT_X = new Axis(1, 0.02);
+    public static final Axis STICK_LEFT_Y = new Axis(2, 0.02);
+    public static final Axis TRIGGERS = new Axis(3);
     public static final Axis STICK_RIGHT_X = new Axis(4, 0.02);
     public static final Axis STICK_RIGHT_Y = new Axis(5, 0.02);
     public static final Axis DPAD_X = new Axis(6, 0.02); //the mode button is why
@@ -18,8 +17,8 @@ public class LogitechF310 extends HID {
     public static final Button STICK_LEFT_RIGHT = new AxisButton(STICK_LEFT_X, false);
     public static final Button STICK_LEFT_UP = new AxisButton(STICK_LEFT_Y, true);
     public static final Button STICK_LEFT_DOWN = new AxisButton(STICK_LEFT_Y, false);
-    public static final Button TRIGGER_LEFT = new AxisButton(TRIGGER_LEFT_AXIS, true);
-    public static final Button TRIGGER_RIGHT = new AxisButton(TRIGGER_RIGHT_AXIS, false);
+    public static final Button TRIGGER_LEFT = new AxisButton(TRIGGERS, true);
+    public static final Button TRIGGER_RIGHT = new AxisButton(TRIGGERS, false);
     public static final Button STICK_RIGHT_LEFT = new AxisButton(STICK_RIGHT_X, true);
     public static final Button STICK_RIGHT_RIGHT = new AxisButton(STICK_RIGHT_X, false);
     public static final Button STICK_RIGHT_UP = new AxisButton(STICK_RIGHT_Y, true);
@@ -49,7 +48,7 @@ public class LogitechF310 extends HID {
      * @param port The port (1-4) that the controller is connected to in the
      * Driver Station.
      */
-    public LogitechF310(int port) {
+    public LegacyLogitechF310(int port) {
         super(port);
     }
 }

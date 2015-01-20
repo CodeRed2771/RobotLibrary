@@ -20,7 +20,7 @@ public class SpeedEncoderShell implements PIDSource {
         }
         this.encoder = encoder;
         encoder.reset();
-        encoder.start();
+        //encoder.start();
         lastTime = System.currentTimeMillis();
     }
 
