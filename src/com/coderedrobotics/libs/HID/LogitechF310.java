@@ -8,8 +8,8 @@ public class LogitechF310 extends HID {
 
     public static final Axis STICK_LEFT_X = new Axis(0, 0.02);
     public static final Axis STICK_LEFT_Y = new Axis(1, 0.02);
-    public static final Axis TRIGGER_RIGHT_AXIS = new Axis(2);
-    public static final Axis TRIGGER_LEFT_AXIS = new Axis(3);
+    public static final Axis TRIGGER_RIGHT_AXIS = new Axis(3);
+    public static final Axis TRIGGER_LEFT_AXIS = new Axis(2);
     public static final Axis STICK_RIGHT_X = new Axis(4, 0.02);
     public static final Axis STICK_RIGHT_Y = new Axis(5, 0.02);
     public static final Axis DPAD_X = new Axis(6, 0.02); //the mode button is why
