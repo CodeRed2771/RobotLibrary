@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Michael/Dropbox/NetbeansProjects/CodeRedRobotics/Robots/RobotLibrary/src/com/coderedrobotics/libs/Compressor.java</file>
+            <file>file:/C:/Users/Michael/Dropbox/NetbeansProjects/CodeRedRobotics/Robots/RobotLibrary/src/com/coderedrobotics/libs/dashboard/communications/Connection.java</file>
+            <file>file:/C:/Users/Michael/Dropbox/NetbeansProjects/CodeRedRobotics/Robots/RobotLibrary/src/com/coderedrobotics/libs/VirtualizableDigitalInput.java</file>
+            <file>file:/C:/Users/Michael/Dropbox/NetbeansProjects/CodeRedRobotics/Robots/RobotLibrary/src/com/coderedrobotics/libs/VirtualizationController.java</file>
+            <file>file:/C:/Users/Michael/Dropbox/NetbeansProjects/CodeRedRobotics/Robots/RobotLibrary/src/com/coderedrobotics/libs/dashboard/communications/BindingManager.java</file>
+            <file>file:/C:/Users/Michael/Dropbox/NetbeansProjects/CodeRedRobotics/Robots/RobotLibrary/src/com/coderedrobotics/libs/dashboard/communications/MultiplexingManager.java</file>
         </group>
     </open-files>
 </project-private>
