@@ -21,7 +21,7 @@ public class ControlsBoxLEDs {
     private static final int SLOW_BLINK_HZ = 1;
     private static final int FAST_BLINK_HZ = 5;
 
-    private int hz = 0; // don't blink
+    private double hz = 0; // don't blink
     private int partyTick = 0;
 
     public ControlsBoxLEDs(int relay1, int relay2) {
@@ -54,7 +54,7 @@ public class ControlsBoxLEDs {
         update();
     }
 
-    public void setHz(int hz) {
+    public void setHz(double hz) {
         this.hz = hz;
     }
 
@@ -97,16 +97,19 @@ public class ControlsBoxLEDs {
 
     public void setColor(Color color) {
         this.color = color;
+        hz = 0;
         update();
     }
 
     private void update() {
-        boolean r = color == Color.WHITE || color == Color.RED || color == Color.MAGENTA
-                || color == Color.YELLOW;
-        boolean g = color == Color.WHITE || color == Color.GREEN || color == Color.YELLOW
-                || color == Color.CYAN;
-        boolean b = color == Color.WHITE || color == Color.BLUE || color == Color.MAGENTA
-                || color == Color.CYAN;
+        boolean on = hz == 0 ? true : (((System.currentTimeMillis()/1000d) * hz) % 1) < 0.5;
+        
+        boolean r = (color == Color.WHITE || color == Color.RED || color == Color.MAGENTA
+                || color == Color.YELLOW) && on;
+        boolean g = (color == Color.WHITE || color == Color.GREEN || color == Color.YELLOW
+                || color == Color.CYAN) && on;
+        boolean b = (color == Color.WHITE || color == Color.BLUE || color == Color.MAGENTA
+                || color == Color.CYAN) && on;
         greenandred.setForward(!g);
         greenandred.setReverse(r);
         blue.setReverse(b);
@@ -116,7 +119,7 @@ public class ControlsBoxLEDs {
 //        greenandred.set(r || g ? Relay.Value.kOn : Relay.Value.kOff);
 //        blue.set(b ? Relay.Value.kOn : Relay.Value.kOff);
     }
-
+  
     public class Relay {
 
         private edu.wpi.first.wpilibj.Relay relay;
