@@ -2,16 +2,16 @@ package com.coderedrobotics.libs;
 
 /**
  *
- * @author Michael
+ * @author Austin
  */
 public class Relay {
-    
-    private edu.wpi.first.wpilibj.Relay relay;
-    private final int port;
-    private final boolean virtualized;
-    private edu.wpi.first.wpilibj.Relay.Value state;
-    private edu.wpi.first.wpilibj.Relay.Direction direction;
 
+    private edu.wpi.first.wpilibj.Relay relay;
+    private boolean forward, reverse;
+    private final int port;
+    private boolean virtualized = false;
+
+    @SuppressWarnings("LeakingThisInConstructor")
     public Relay(int port) {
         this.port = port;
         virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();
@@ -19,6 +19,7 @@ public class Relay {
             VirtualizationController.getInstance().addRelay(this);
         } else {
             relay = new edu.wpi.first.wpilibj.Relay(port);
+            relay.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
         }
     }
 
@@ -26,27 +27,40 @@ public class Relay {
         return port;
     }
 
-    public edu.wpi.first.wpilibj.Relay.Value get() {
-        return virtualized ? state : relay.get();
+    public void setForward(boolean forward) {
+        this.forward = forward;
+        refresh();
     }
-    
-    public void set(edu.wpi.first.wpilibj.Relay.Value value) {
+
+    public void setReverse(boolean reverse) {
+        this.reverse = reverse;
+        refresh();
+    }
+
+    public boolean getForward() {
+        return forward;
+    }
+
+    public boolean getReverse() {
+        return reverse;
+    }
+
+    private void refresh() {
         if (virtualized) {
-            VirtualizationController.getInstance().setRelay(this, value);
-            this.state = value;
+            VirtualizationController.getInstance().setRelay(this, forward, reverse);
         } else {
-            relay.set(value);
-        }
-    }
-    
-    public edu.wpi.first.wpilibj.Relay.Direction getDirection() {
-        return direction;
-    }
-    
-    public void setDirection(edu.wpi.first.wpilibj.Relay.Direction direction) {
-        this.direction = direction;
-        if (!virtualized) {
-            relay.setDirection(direction);
+            if (forward || reverse) {
+                if (forward && reverse) {
+                    relay.setDirection(edu.wpi.first.wpilibj.Relay.Direction.kBoth);
+                } else if (forward && !reverse) {
+                    relay.setDirection(edu.wpi.first.wpilibj.Relay.Direction.kForward);
+                } else if (!forward && reverse) {
+                    relay.setDirection(edu.wpi.first.wpilibj.Relay.Direction.kReverse);
+                }
+                relay.set(edu.wpi.first.wpilibj.Relay.Value.kOn);
+            } else {
+                relay.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
+            }
         }
     }
 }

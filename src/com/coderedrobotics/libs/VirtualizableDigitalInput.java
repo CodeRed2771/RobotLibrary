@@ -13,6 +13,7 @@ public class VirtualizableDigitalInput {
     private final int port;
     private boolean state = false;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public VirtualizableDigitalInput(int port) {
         this.port = port;
         virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();

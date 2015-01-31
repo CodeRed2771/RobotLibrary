@@ -1,13 +1,15 @@
 package com.coderedrobotics.libs;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 /**
  *
  * @author Michael
  */
 public class ControlsBoxLEDs {
 
-    private Relay greenandred;
-    private Relay blue;
+    private final Relay greenandred;
+    private final Relay blue;
 
     public static enum Color {
 
@@ -35,7 +37,9 @@ public class ControlsBoxLEDs {
     }
 
     public void activateTeleop() {
-        color = TELEOP_COLOR;
+        DriverStation ds = DriverStation.getInstance();
+        color = DriverStation.Alliance.Blue == ds.getAlliance() ? Color.BLUE : 
+                DriverStation.Alliance.Red == ds.getAlliance() ? Color.RED : Color.MAGENTA;
         update();
     }
 
@@ -118,41 +122,5 @@ public class ControlsBoxLEDs {
 //                : r ? Relay.Direction.kForward : Relay.Direction.kReverse);
 //        greenandred.set(r || g ? Relay.Value.kOn : Relay.Value.kOff);
 //        blue.set(b ? Relay.Value.kOn : Relay.Value.kOff);
-    }
-  
-    public class Relay {
-
-        private edu.wpi.first.wpilibj.Relay relay;
-        private boolean forward, reverse;
-
-        public Relay(int port) {
-            relay = new edu.wpi.first.wpilibj.Relay(port);
-            relay.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
-        }
-
-        public void setForward(boolean forward) {
-            this.forward = forward;
-            refresh();
-        }
-
-        public void setReverse(boolean reverse) {
-            this.reverse = reverse;
-            refresh();
-        }
-
-        private void refresh() {
-            if (forward || reverse) {
-                if (forward && reverse) {
-                    relay.setDirection(edu.wpi.first.wpilibj.Relay.Direction.kBoth);
-                } else if (forward && !reverse) {
-                    relay.setDirection(edu.wpi.first.wpilibj.Relay.Direction.kForward);
-                } else if (!forward && reverse) {
-                    relay.setDirection(edu.wpi.first.wpilibj.Relay.Direction.kReverse);
-                }
-                relay.set(edu.wpi.first.wpilibj.Relay.Value.kOn);
-            } else {
-                relay.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
-            }
-        }
     }
 }

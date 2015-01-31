@@ -20,15 +20,16 @@ public class VirtualizationController implements SubsocketListener {
     private static VirtualizationController vc;
     private boolean enable = false;
 
-    private Bar[] pwm;
+    private final Bar[] pwm;
     private Subsocket dio;
     private Subsocket analogin;
-    private Indicator[][] relays;
-    private Indicator[][] pneumatics;
+    private final Indicator[][] relays;
+    private final Indicator[][] pneumatics;
     private Indicator compressor;
-    private VirtualizableDigitalInput[] digitalInputs;
-    private VirtualizableAnalogInput[] analogInputs;
+    private final VirtualizableDigitalInput[] digitalInputs;
+    private final VirtualizableAnalogInput[] analogInputs;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     private VirtualizationController() {
         pwm = new Bar[10];
         relays = new Indicator[4][2];
@@ -98,12 +99,10 @@ public class VirtualizationController implements SubsocketListener {
         pneumatics[port][1].setState(state);
     }
     
-    public void setRelay(Relay relay, edu.wpi.first.wpilibj.Relay.Value state) {
-//        int port = relay.getPort();
-//        edu.wpi.first.wpilibj.Relay.Value.
-//        relays[port][0].setState(!state);
-//        relays[port][1].setState(!state);
-        // don't even try
+    public void setRelay(Relay relay, boolean forward, boolean backward) {
+        int port = relay.getPort();
+        relays[port][0].setState(backward);
+        relays[port][1].setState(forward);
     }
 
     public static VirtualizationController getInstance() {

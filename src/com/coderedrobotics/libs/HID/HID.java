@@ -27,6 +27,10 @@ public class HID {
     }
 
     public double axis(Axis axis) {
+        if (axis instanceof POVAxis) {
+            POVAxis pov = (POVAxis) axis;
+            return pov.isX ? Math.sin(joystick.getPOV(pov.pov)) : Math.cos(joystick.getPOV(pov.pov));
+        }
         double result = joystick.getRawAxis(axis.axis);
         boolean sign = result > 0d;
         result = Math.abs(result);
@@ -36,7 +40,7 @@ public class HID {
         }
         result = result * (1d / (1d - axis.deadZone));
         result *= sign ? 1d : -1d;
-        return result;
+        return result * axis.multiplier;
     }
 
     public boolean buttonReleased(Button button, ButtonState state) {
@@ -71,9 +75,6 @@ public class HID {
 
         private int button;
 
-        protected Button(Axis axis, boolean direction) {
-        }//do not use this constructor
-
         Button(int button) {
             this.button = button;
         }
@@ -83,6 +84,7 @@ public class HID {
 
         private int axis;
         private double deadZone = 0;
+        private double multiplier = 1;
 
         Axis(int axis) {
             this.axis = axis;
@@ -92,6 +94,12 @@ public class HID {
             this.axis = axis;
             this.deadZone = deadZone;
         }
+        
+        Axis (int axis, double deadZone, double multiplier) {
+            this.axis = axis;
+            this.deadZone = deadZone;
+            this.multiplier = multiplier;
+        }
     }
 
     public static class AxisButton extends Button {
@@ -100,12 +108,24 @@ public class HID {
         private boolean direction;
 
         AxisButton(Axis axis, boolean direction) {
-            super(axis, direction);
+            super(0);
             this.axis = axis;
             this.direction = direction;
         }
     }
 
+    public static class POVAxis extends Axis {
+                
+        private int pov = 0;
+        private boolean isX = false;
+        
+        POVAxis(int pov, boolean isX) {
+            super(0);
+            this.pov = pov;
+            this.isX = isX;
+        }
+    }
+    
     public static class ButtonState {
 
         private boolean state = false;

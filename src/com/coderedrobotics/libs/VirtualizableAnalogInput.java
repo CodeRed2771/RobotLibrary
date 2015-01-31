@@ -13,6 +13,7 @@ public class VirtualizableAnalogInput {
     private final int port;
     private double state = 0;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public VirtualizableAnalogInput(int port) {
         this.port = port;
         virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();

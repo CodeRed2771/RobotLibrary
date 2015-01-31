@@ -9,6 +9,7 @@ public class Compressor {
     private edu.wpi.first.wpilibj.Compressor compressor;
     private final boolean virtualized;
     
+    @SuppressWarnings("LeakingThisInConstructor")
     public Compressor() {
         virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();
         if (virtualized) {
