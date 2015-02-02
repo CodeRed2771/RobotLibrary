@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 public class VirtualizationController implements SubsocketListener {
 
     private static VirtualizationController vc;
-    private boolean enable = false;
+    private boolean virtualizationEnabled = false;
+    private boolean monitoringEnabled = false;
 
     private final Bar[] pwm;
     private Subsocket dio;
@@ -77,11 +78,26 @@ public class VirtualizationController implements SubsocketListener {
     }
     
     public void setVirtualizationEnabled(boolean state) {
-        enable = state;
+        virtualizationEnabled = state;
+        if (state) {
+            monitoringEnabled = true;
+        }
     }
 
     public boolean isVirtualizationEnabled() {
-        return enable;
+        return virtualizationEnabled;
+    }
+    
+    /**
+     * Warning, if Virtualization is enabled you will definitely not want to do this
+     * @param state 
+     */
+    public void setMonitoringEnabled(boolean state) {
+        monitoringEnabled = state;
+    }
+    
+    public boolean isMonitoringEnabled() {
+        return monitoringEnabled;
     }
 
     public void setPWM(PWMController controller, double speed) {

@@ -15,11 +15,12 @@ public class Relay {
     public Relay(int port) {
         this.port = port;
         virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();
-        if (virtualized) {
-            VirtualizationController.getInstance().addRelay(this);
-        } else {
+        if (!virtualized) {
             relay = new edu.wpi.first.wpilibj.Relay(port);
             relay.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
+        } 
+        if (VirtualizationController.getInstance().isMonitoringEnabled()) {
+            VirtualizationController.getInstance().addRelay(this);
         }
     }
 
@@ -46,9 +47,7 @@ public class Relay {
     }
 
     private void refresh() {
-        if (virtualized) {
-            VirtualizationController.getInstance().setRelay(this, forward, reverse);
-        } else {
+        if (!virtualized) {
             if (forward || reverse) {
                 if (forward && reverse) {
                     relay.setDirection(edu.wpi.first.wpilibj.Relay.Direction.kBoth);
@@ -62,5 +61,12 @@ public class Relay {
                 relay.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
             }
         }
+        if (VirtualizationController.getInstance().isMonitoringEnabled()) {
+            VirtualizationController.getInstance().setRelay(this, forward, reverse);
+        }
+    }
+    
+    public edu.wpi.first.wpilibj.Relay getWPIRelay() {
+        return relay;
     }
 }

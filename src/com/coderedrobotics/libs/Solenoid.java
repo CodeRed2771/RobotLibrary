@@ -14,25 +14,26 @@ public class Solenoid {
     public Solenoid(int port) {
         this.port = port;
         virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();
-        if (virtualized) {
-            VirtualizationController.getInstance().addSolenoid(this);
-        } else {
+        if (!virtualized) {
             solenoid = new edu.wpi.first.wpilibj.Solenoid(port);
+        } 
+        if (VirtualizationController.getInstance().isMonitoringEnabled()) {
+            VirtualizationController.getInstance().addSolenoid(this);
         }
     }
 
-    public Solenoid(int pcm, int port) {
-        this.port = port;
-        virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();
-        if (virtualized) {
-            if (pcm > 0) {
-                return;
-            }
-            VirtualizationController.getInstance().addSolenoid(this);
-        } else {
-            solenoid = new edu.wpi.first.wpilibj.Solenoid(pcm, port);
-        }
-    }
+//    public Solenoid(int pcm, int port) {
+//        this.port = port;
+//        virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();
+//        if (virtualized) {
+//            if (pcm > 0) {
+//                return;
+//            }
+//            VirtualizationController.getInstance().addSolenoid(this);
+//        } else {
+//            solenoid = new edu.wpi.first.wpilibj.Solenoid(pcm, port);
+//        }
+//    }
 
     public int getPort() {
         return port;
@@ -40,10 +41,12 @@ public class Solenoid {
 
     public void set(boolean state) {
         if (virtualized) {
-            VirtualizationController.getInstance().setSolenoid(this, state);
             this.state = state;
         } else {
             solenoid.set(state);
+        }
+        if (VirtualizationController.getInstance().isMonitoringEnabled()) {            
+            VirtualizationController.getInstance().setSolenoid(this, state);
         }
     }
 
@@ -53,5 +56,9 @@ public class Solenoid {
 
     public boolean isBlackListed() {
         return virtualized ? solenoid.isBlackListed() : false;
+    }
+    
+    public edu.wpi.first.wpilibj.Solenoid getWPISolenoid() {
+        return solenoid;
     }
 }

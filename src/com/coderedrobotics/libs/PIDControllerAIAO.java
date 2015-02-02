@@ -72,6 +72,7 @@ public class PIDControllerAIAO implements ConnectionListener {
         }
 
         public void run() {
+            DebugConsole.getInstance().println("PIDTask.run()", "piddebug");
             m_controller.calculate();
         }
     }
@@ -101,6 +102,7 @@ public class PIDControllerAIAO implements ConnectionListener {
         m_controlLoop = new java.util.Timer();
 
         try {
+            Connection.addConnectionListener(this);
             Subsocket root = Connection.getInstance().getRootSubsocket().enableMultiplexing();
             pid = root.createNewRoute("root.pid").enableMultiplexing();
             root.createNewRoute("root.pid." + name).enableMultiplexing();

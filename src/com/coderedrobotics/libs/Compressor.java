@@ -12,27 +12,29 @@ public class Compressor {
     @SuppressWarnings("LeakingThisInConstructor")
     public Compressor() {
         virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();
-        if (virtualized) {
-            VirtualizationController.getInstance().addCompressor(this);
-        } else {
+        if (!virtualized) {
             compressor = new edu.wpi.first.wpilibj.Compressor();
+        }
+        if (VirtualizationController.getInstance().isMonitoringEnabled()) {
+            VirtualizationController.getInstance().addCompressor(this);
         }
     }
     
     public void start() {
-        if (virtualized) {
-            VirtualizationController.getInstance().setCompressor(true);
-        } else {
+        if (!virtualized) {
             compressor.start();
+        } 
+        if (VirtualizationController.getInstance().isMonitoringEnabled()) {
+            VirtualizationController.getInstance().setCompressor(true);
         }
     }
     
     public void stop() {
-        
-        if (virtualized) {
-            VirtualizationController.getInstance().setCompressor(false);
-        } else {
+        if (!virtualized) {
             compressor.stop();
+        } 
+        if (VirtualizationController.getInstance().isMonitoringEnabled()) {
+            VirtualizationController.getInstance().setCompressor(false);
         }
     }
     

@@ -1,6 +1,6 @@
 package com.coderedrobotics.libs;
 
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  *
@@ -8,17 +8,18 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class PWMController {
     
-    private Talon controller;
+    private Victor controller;
     private final int port;
     private final boolean virtualized;
     
     public PWMController(int port) {
         this.port = port;
         virtualized = VirtualizationController.getInstance().isVirtualizationEnabled();
-        if (virtualized) {
+        if (!virtualized) {
+            controller = new Victor(port);
+        }
+        if (VirtualizationController.getInstance().isMonitoringEnabled()) {
             VirtualizationController.getInstance().addPWMController(this);
-        } else {
-            controller = new Talon(port);
         }
     }
     
@@ -27,10 +28,15 @@ public class PWMController {
     }
     
     public void set(double speed) {
-        if (virtualized){
-            VirtualizationController.getInstance().setPWM(this, speed);
-        } else {
+        if (!virtualized){
             controller.set(speed);
         }
+        if (VirtualizationController.getInstance().isMonitoringEnabled()) {
+            VirtualizationController.getInstance().setPWM(this, speed);
+        }
+    }
+    
+    public Victor getWIPController() {
+        return controller;
     }
 }

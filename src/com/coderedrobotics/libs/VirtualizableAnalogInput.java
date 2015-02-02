@@ -1,12 +1,13 @@
 package com.coderedrobotics.libs;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.PIDSource;
 
 /**
  *
  * @author Michael
  */
-public class VirtualizableAnalogInput {
+public class VirtualizableAnalogInput implements PIDSource {
     
     private AnalogInput analogInput;
     private final boolean virtualized;
@@ -38,5 +39,10 @@ public class VirtualizableAnalogInput {
 
     void set(double state) {
         this.state = state;
+    }
+
+    @Override
+    public double pidGet() {
+        return get();
     }
 }
