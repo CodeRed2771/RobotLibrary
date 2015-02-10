@@ -1,11 +1,10 @@
 package com.coderedrobotics.libs;
 
 import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.Victor;
 
 public abstract class Drive {
 
-    double x, y, rot;
+    private double x, y, rot;
 
     public Drive() {
     }
@@ -46,7 +45,11 @@ public abstract class Drive {
         setRot(rot);
     }
 
-    protected abstract void recalulate();
+    private void recalulate() {
+        recalulate(x, y, rot);
+    }
+
+    protected abstract void recalulate(double x, double y, double rot);
 
     public PIDOutput getRotPIDOutput() {
         return new PIDOutput() {
