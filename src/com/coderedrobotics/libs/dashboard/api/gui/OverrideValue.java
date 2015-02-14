@@ -57,10 +57,6 @@ public class OverrideValue implements RemoteBooleanListener {
         return value;
     }
     
-    public double getOriginalValue() {
-        return originalValue.getValue();
-    }
-    
     public boolean isOverriden() {
         return useOverride.getValue();
     }

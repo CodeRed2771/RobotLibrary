@@ -90,7 +90,7 @@ class MultiplexingManager implements SubsocketListener, MultiplexingListener {
                     root.getSubsocket(action.getRoute()).disableMultiplexing(false);
                     break;
                 case ROUTE_ADD:
-                    BindingManager.manualBind(action.getRoute(), action.getPort());
+//                    BindingManager.manualBind(action.getRoute(), action.getPort());
                     root.createNewRoute(action.getRoute(), false);
                     break;
                 case ROUTE_REMOVE:
@@ -99,10 +99,11 @@ class MultiplexingManager implements SubsocketListener, MultiplexingListener {
             //System.out.println("SYNC CODE: " + action.typeToInt() + " on: " + action.getRoute());
         } catch (InvalidRouteException | NotMultiplexedException | RootRouteException ex) {
             Logger.getLogger(MultiplexingManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RouteException ex) {
-            Logger.getLogger(MultiplexingManager.class.getName()).log(Level.SEVERE, null, ex);
-            //System.exit(1000);
-        }
+        } 
+//        catch (RouteException ex) {
+//            Logger.getLogger(MultiplexingManager.class.getName()).log(Level.SEVERE, null, ex);
+//            //System.exit(1000);
+//        }
     }
 
     private void update(byte[] data) {

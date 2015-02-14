@@ -17,6 +17,7 @@ public class ControlsBoxLEDs {
     }
 
     private Color color = Color.GREEN;
+    private Color secondary = Color.RED;
     private static final Color AUTONOMOUS_COLOR = Color.WHITE;
     private static final Color TELEOP_COLOR = Color.RED;
     private static final Color TEST_COLOR = Color.CYAN;
@@ -25,6 +26,8 @@ public class ControlsBoxLEDs {
 
     private double hz = 0; // don't blink
     private int partyTick = 0;
+    private boolean strobe2color = false;
+    private boolean error = false;
 
     public ControlsBoxLEDs(int relay1, int relay2) {
         greenandred = new Relay(relay1);
@@ -75,6 +78,36 @@ public class ControlsBoxLEDs {
     public void blinkTick() {
         update();
     }
+    
+    public void error() {
+        if (!error) {
+            error = true;
+            secondary = color;
+        }
+        color = Color.MAGENTA;
+        hz = 1;
+        strobe2color = true;
+        update();
+    }
+    
+    public void encoderError() {
+        if (!error) {
+            error = true;
+            secondary = color;
+        }
+        color = Color.YELLOW;
+        hz = 1;
+        strobe2color = true;
+        update();
+    }
+    
+    public void disableError() {
+        error = false;
+        color = secondary;
+        strobe2color = false;
+        hz = 0;
+        update();
+    }
 
     public void party() {
         hz = 15;
@@ -107,6 +140,11 @@ public class ControlsBoxLEDs {
 
     private void update() {
         boolean on = hz == 0 ? true : (((System.currentTimeMillis()/1000d) * hz) % 1) < 0.5;
+        
+        if (strobe2color) {
+            color = on ? color : secondary;
+            on = true;
+        }
         
         boolean r = (color == Color.WHITE || color == Color.RED || color == Color.MAGENTA
                 || color == Color.YELLOW) && on;
