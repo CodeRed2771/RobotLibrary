@@ -13,20 +13,33 @@ import edu.wpi.first.wpilibj.PIDSource;
  */
 public class FieldOrientedDrive extends Drive {
 
-    Drive drive;
-    PIDSource pIDSource;
+    private Drive drive;
+    private PIDSource pIDSource;
+    private boolean enableFieldOrientedControl = true;
 
     public FieldOrientedDrive(Drive drive, PIDSource orientation) {
         this.drive = drive;
         this.pIDSource = orientation;
     }
 
+    public void disableFieldOrientedControl() {
+        enableFieldOrientedControl = false;
+    }
+
+    public void enableFieldOrientedControl() {
+        enableFieldOrientedControl = true;
+    }
+
     @Override
     protected void recalulate(double x, double y, double rot) {
-        double mag = Math.sqrt(x * x + y * y);
-        double dir = Math.atan2(x, y) - Math.toRadians(pIDSource.pidGet());
+        if (enableFieldOrientedControl) {
+            double mag = Math.sqrt(x * x + y * y);
+            double dir = Math.atan2(x, y) - Math.toRadians(pIDSource.pidGet());
 
-        drive.setXYRot(mag * Math.sin(dir), mag * Math.cos(dir), rot);
+            drive.setXYRot(mag * Math.sin(dir), mag * Math.cos(dir), rot);
+        } else {
+            drive.setXYRot(x, y, rot);
+        }
     }
 
 }
