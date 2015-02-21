@@ -15,26 +15,28 @@ import edu.wpi.first.wpilibj.Gyro;
 public class MechanumPlaceTracker extends PlaceTracker {
 
     private double oldRightBack, oldRightFront, oldLeftFront, oldLeftBack, oldRot;
-    private final Encoder rightBackEncoder, rightFrontEncoder, leftFrontEncoder, leftBackEncoder;
+    public final Encoder rightBackEncoder, rightFrontEncoder, leftFrontEncoder, leftBackEncoder;
     private final Gyro gyro;
+    private final double xScale = 0.013310328, yScale = 0.010912563, rotScale = 0.027147274;
 
     public MechanumPlaceTracker(
             int rightBackA, int rightBackB, int rightFrontA, int rightFrontB,
-            int leftFrontA, int leftFrontB, int leftBackA, int leftBackB) {
+            int leftFrontA, int leftFrontB, int leftBackA, int leftBackB, int gyro) {
 
         rightBackEncoder = new Encoder(rightBackA, rightBackB);
         rightFrontEncoder = new Encoder(rightFrontA, rightFrontB);
         leftFrontEncoder = new Encoder(leftFrontA, leftFrontB);
         leftBackEncoder = new Encoder(leftBackA, leftBackB);
-        gyro = new Gyro(0);
+
+        this.gyro = new Gyro(gyro);
     }
 
     @Override
     protected double[] updatePosition() {
         double rightBackTotal = rightBackEncoder.get(),
                 rightFrontTotal = rightFrontEncoder.get(),
-                leftFrontTotal = rightFrontEncoder.get(),
-                leftBackTotal = rightFrontEncoder.get();
+                leftFrontTotal = leftFrontEncoder.get(),
+                leftBackTotal = leftBackEncoder.get();
         double a = rightBackTotal - oldRightBack,
                 b = rightFrontTotal - oldRightFront,
                 c = leftFrontTotal - oldLeftFront,
@@ -43,16 +45,29 @@ public class MechanumPlaceTracker extends PlaceTracker {
         oldRightFront = rightFrontTotal;
         oldLeftFront = leftFrontTotal;
         oldLeftBack = leftBackTotal;
+        
+        System.out.println(
+                "0: " + rightBackTotal +
+                "\t1: " + rightFrontTotal +
+                "\t2: " + leftFrontTotal +
+                "\t3: " + leftBackTotal);
 
         double rawRot = gyro.getAngle();
         double rot = oldRot - rawRot;
         oldRot = rawRot;
 
-        int errorWheel = calculateWheelError(a, b, c, d, rot, 0);
-        
-        double[] xyrot = calculateXYRot(a, b, c, d, errorWheel);
-        
+        //int errorWheel = calculateWheelError(a, b, c, d, rot, 0);
+        double[] xyrot = calculateXYRot(a, b, c, d);//, errorWheel);
+
         xyrot[2] = rot;
+
+        return scale(xyrot);
+    }
+
+    private double[] scale(double[] xyrot) {
+        xyrot[0] *= xScale;
+        xyrot[1] *= yScale;
+        xyrot[2] *= rotScale;
         
         return xyrot;
     }
@@ -113,13 +128,13 @@ public class MechanumPlaceTracker extends PlaceTracker {
         } else {
             x = (a - b) / 2;
         }
-        
+
         if (errorWheel == 0 || errorWheel == 3) {
             y = (b + c) / 2;
         } else {
             y = (a + d) / 2;
         }
-        
+
         if (errorWheel == 0 || errorWheel == 2) {
             rot = (d - b) / 2;
         } else {
