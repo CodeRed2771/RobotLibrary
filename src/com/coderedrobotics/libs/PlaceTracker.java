@@ -94,50 +94,24 @@ public abstract class PlaceTracker {
         }.init(this);
     }
 
-    public PIDSource getRotToDestinationPIDSource() {
-        return new PIDSource() {
+    public double getRotToDestination() {
+        double xError = destinationX - x, yError = destinationY - y;
 
-            PlaceTracker pt;
-
-            @Override
-            public double pidGet() {
-                double xError = destinationX - x, yError = destinationY - y;
-
-                return (pt.rot - Math.toDegrees(Math.atan2(yError, xError))) % 360;
-            }
-
-            public PIDSource init(PlaceTracker pt) {
-                this.pt = pt;
-                return this;
-            }
-        }.init(this);
+        return (rot - Math.toDegrees(Math.atan2(yError, xError))) % 360;
     }
 
-    public PIDSource getDistanceToDestinationPIDSource() {
-        return new PIDSource() {
+    public double getDistanceToDestination() {
+        double xError = destinationX - x, yError = destinationY - y;
 
-            PlaceTracker pt;
+        double rotError = (rot - Math.toDegrees(Math.atan2(yError, xError))) % 360;
 
-            @Override
-            public double pidGet() {
-                double xError = pt.destinationX - pt.x, yError = pt.destinationY - pt.y;
+        if (rotError > 180) {
+            rotError -= 360;
+        }
 
-                double rotError = (pt.rot - Math.toDegrees(Math.atan2(yError, xError))) % 360;
+        double displacement = Math.sqrt(Math.pow(xError, 2) + Math.pow(yError, 2));
+        double speed = (90 - Math.abs(rotError)) / 90;
 
-                if (rotError > 180) {
-                    rotError -= 360;
-                }
-
-                double displacement = Math.sqrt(Math.pow(xError, 2) + Math.pow(yError, 2));
-                double speed = (90 - Math.abs(rotError)) / 90;
-
-                return speed * displacement;
-            }
-
-            public PIDSource init(PlaceTracker pt) {
-                this.pt = pt;
-                return this;
-            }
-        }.init(this);
+        return speed * displacement;
     }
 }
