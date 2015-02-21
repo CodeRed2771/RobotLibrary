@@ -5,6 +5,8 @@
  */
 package com.coderedrobotics.libs;
 
+import com.coderedrobotics.libs.dash.DashBoard;
+import com.coderedrobotics.libs.dash.PIDControllerAIAO;
 import edu.wpi.first.wpilibj.PIDSource;
 
 /**
@@ -21,12 +23,13 @@ public class PIDDrive extends Drive {
             PIDSource xSource, PIDSource ySource, PIDSource rotSource,
             double xp, double xi, double xd,
             double yp, double yi, double yd,
-            double rotp, double roti, double rotd) {
+            double rotp, double roti, double rotd,
+            DashBoard dash) {
 
         this.outDrive = outDrive;
-        xPID = new PIDControllerAIAO(xp, xi, xd, xSource, outDrive.getXPIDOutput(), "X drive");
-        yPID = new PIDControllerAIAO(yp, yi, yd, ySource, outDrive.getYPIDOutput(), "Y drive");
-        rotPID = new PIDControllerAIAO(rotp, roti, rotd, rotSource, outDrive.getRotPIDOutput(), "rot drive");
+        xPID = new PIDControllerAIAO(xp, xi, xd, xSource, outDrive.getXPIDOutput(), dash, "X drive");
+        yPID = new PIDControllerAIAO(yp, yi, yd, ySource, outDrive.getYPIDOutput(), dash, "Y drive");
+        rotPID = new PIDControllerAIAO(rotp, roti, rotd, rotSource, outDrive.getRotPIDOutput(), dash, "rot drive");
 
         xPID.enable();
         yPID.enable();
