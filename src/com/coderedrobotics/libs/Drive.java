@@ -25,24 +25,28 @@ public abstract class Drive {
     }
 
     public void setXY(double x, double y) {
-        setX(x);
-        setY(y);
+        this.x = x;
+        this.y = y;
+        recalulate();
     }
 
     public void setXRot(double x, double rot) {
-        setX(x);
-        setRot(rot);
+        this.x = x;
+        this.rot = rot;
+        recalulate();
     }
 
     public void setYRot(double y, double rot) {
-        setY(y);
-        setRot(rot);
+        this.y = y;
+        this.rot = rot;
+        recalulate();
     }
 
     public void setXYRot(double x, double y, double rot) {
-        setX(x);
-        setY(y);
-        setRot(rot);
+        this.x = x;
+        this.y = y;
+        this.rot = rot;
+        recalulate();
     }
 
     private void recalulate() {

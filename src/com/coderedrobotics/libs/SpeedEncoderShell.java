@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 /**
  *
  * @author Austin
+ * @deprecated replaced with PIDDerivativeCalculator
  */
 public class SpeedEncoderShell implements PIDSource {
 

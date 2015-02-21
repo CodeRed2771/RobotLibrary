@@ -29,7 +29,9 @@ public class HID {
     public double axis(Axis axis) {
         if (axis instanceof POVAxis) {
             POVAxis pov = (POVAxis) axis;
-            return pov.isX ? Math.sin(joystick.getPOV(pov.pov)) : Math.cos(joystick.getPOV(pov.pov));
+            double povDirection = joystick.getPOV(pov.pov);
+            if (povDirection == -1) return 0;
+            return pov.isX ? Math.sin(Math.toRadians(povDirection)) : Math.cos(Math.toRadians(povDirection));
         }
         double result = joystick.getRawAxis(axis.axis);
         boolean sign = result > 0d;
@@ -120,7 +122,7 @@ public class HID {
         private boolean isX = false;
         
         POVAxis(int pov, boolean isX) {
-            super(0);
+            super(-1);
             this.pov = pov;
             this.isX = isX;
         }
