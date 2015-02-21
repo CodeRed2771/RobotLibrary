@@ -48,6 +48,9 @@ public class OverrideValue implements RemoteBooleanListener {
     public void setOriginalValue(double value) {
         try {
             originalValue.setValue(value);
+            if (!useOverride.getValue()) {
+                this.value = value;
+            }
         } catch (RemoteDouble.InvalidModeException ex) {
             Logger.getLogger(OverrideValue.class.getName()).log(Level.SEVERE, null, ex);
         }
