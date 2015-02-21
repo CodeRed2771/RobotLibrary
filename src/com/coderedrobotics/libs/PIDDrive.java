@@ -15,7 +15,7 @@ public class PIDDrive extends Drive {
 
     private Drive outDrive;
     private boolean enablePID = true;
-    private PIDControllerAIAO xPID, yPID, rotPID;
+    public PIDControllerAIAO xPID, yPID, rotPID;
 
     public PIDDrive(Drive outDrive,
             PIDSource xSource, PIDSource ySource, PIDSource rotSource,
