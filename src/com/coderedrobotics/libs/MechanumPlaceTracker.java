@@ -17,16 +17,21 @@ public class MechanumPlaceTracker extends PlaceTracker {
     private double oldRightBack, oldRightFront, oldLeftFront, oldLeftBack, oldRot;
     public final Encoder rightBackEncoder, rightFrontEncoder, leftFrontEncoder, leftBackEncoder;
     private final Gyro gyro;
-    private final double xScale = 0.013310328, yScale = 0.010912563, rotScale = 0.027147274;
+    private final double xScale, yScale, rotScale;
 
     public MechanumPlaceTracker(
             int rightBackA, int rightBackB, int rightFrontA, int rightFrontB,
-            int leftFrontA, int leftFrontB, int leftBackA, int leftBackB, int gyro) {
+            int leftFrontA, int leftFrontB, int leftBackA, int leftBackB, int gyro,
+            double xScale, double yScale, double rotScale) {
 
         rightBackEncoder = new Encoder(rightBackA, rightBackB);
         rightFrontEncoder = new Encoder(rightFrontA, rightFrontB);
         leftFrontEncoder = new Encoder(leftFrontA, leftFrontB);
         leftBackEncoder = new Encoder(leftBackA, leftBackB);
+        
+        this.xScale = xScale;
+        this.yScale = yScale;
+        this.rotScale = rotScale;
 
         this.gyro = new Gyro(gyro);
     }
@@ -67,7 +72,7 @@ public class MechanumPlaceTracker extends PlaceTracker {
     private double[] scale(double[] xyrot) {
         xyrot[0] *= xScale;
         xyrot[1] *= yScale;
-        xyrot[2] *= rotScale;
+        //xyrot[2] *= rotScale;
         
         return xyrot;
     }

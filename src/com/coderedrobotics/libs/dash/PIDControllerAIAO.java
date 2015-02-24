@@ -147,6 +147,7 @@ public class PIDControllerAIAO {
 
         if (enabled) {
             double input = pidInput.pidGet();
+            dashBoard.prtln(name + ":\t" + input, 1);
             double result;
             PIDOutput pidOutput = null;
 

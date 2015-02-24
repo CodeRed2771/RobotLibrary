@@ -17,6 +17,7 @@ public class PIDDrive extends Drive {
 
     private Drive outDrive;
     private boolean enablePID = true;
+    private double xmax, ymax, rotmax;
     public PIDControllerAIAO xPID, yPID, rotPID;
 
     public PIDDrive(Drive outDrive,
@@ -24,8 +25,13 @@ public class PIDDrive extends Drive {
             double xp, double xi, double xd,
             double yp, double yi, double yd,
             double rotp, double roti, double rotd,
+            double xmax, double ymax, double rotmax,
             DashBoard dash) {
 
+        this.xmax = xmax;
+        this.ymax = ymax;
+        this.rotmax = rotmax;
+        
         this.outDrive = outDrive;
         xPID = new PIDControllerAIAO(xp, xi, xd, xSource, outDrive.getXPIDOutput(), dash, "X drive");
         yPID = new PIDControllerAIAO(yp, yi, yd, ySource, outDrive.getYPIDOutput(), dash, "Y drive");
@@ -35,9 +41,9 @@ public class PIDDrive extends Drive {
         yPID.enable();
         rotPID.enable();
 
-        xPID.setInputRange(-1, 1);
-        yPID.setInputRange(-1, 1);
-        rotPID.setInputRange(-1, 1);
+        xPID.setInputRange(-xmax, xmax);
+        yPID.setInputRange(-ymax, ymax);
+        rotPID.setInputRange(-rotmax, rotmax);
     }
 
     public void enablePID() {
@@ -60,8 +66,8 @@ public class PIDDrive extends Drive {
 
     @Override
     protected void recalulate(double x, double y, double rot) {
-        xPID.setSetpoint(clip(x));
-        yPID.setSetpoint(clip(y));
-        rotPID.setSetpoint(clip(rot));
+        xPID.setSetpoint(clip(x) * xmax);
+        yPID.setSetpoint(clip(y) * ymax);
+        rotPID.setSetpoint(clip(rot) * rotmax);
     }
 }

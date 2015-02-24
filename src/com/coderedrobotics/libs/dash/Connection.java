@@ -13,7 +13,7 @@ public class Connection implements SimpleSock {
     private InputStreamBuffer dataInputStream;
     private OutputStreamBuffer dataOutputStream;
     
-    String address = "10.27.71.59";
+    String address = "socket://10.27.71.59";
 
     public Connection(String address) {
         connection = null;
