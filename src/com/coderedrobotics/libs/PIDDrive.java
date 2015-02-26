@@ -26,6 +26,7 @@ public class PIDDrive extends Drive {
             double yp, double yi, double yd,
             double rotp, double roti, double rotd,
             double xmax, double ymax, double rotmax,
+            double xhoist, double yhoist, double rothoist,
             DashBoard dash) {
 
         this.xmax = xmax;
@@ -41,6 +42,10 @@ public class PIDDrive extends Drive {
         yPID.enable();
         rotPID.enable();
 
+        xPID.setHoist(xhoist);
+        yPID.setHoist(yhoist);
+        rotPID.setHoist(rothoist);
+        
         xPID.setInputRange(-xmax, xmax);
         yPID.setInputRange(-ymax, ymax);
         rotPID.setInputRange(-rotmax, rotmax);
