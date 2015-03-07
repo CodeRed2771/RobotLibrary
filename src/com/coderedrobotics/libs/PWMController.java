@@ -1,13 +1,14 @@
 package com.coderedrobotics.libs;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
  *
  * @author Michael
  */
-public class PWMController {
+public class PWMController implements PIDOutput{
 
     private Victor controller;
     private final int port;
@@ -65,5 +66,10 @@ public class PWMController {
 
     public Victor getWIPController() {
         return controller;
+    }
+
+    @Override
+    public void pidWrite(double output) {
+        set(output);
     }
 }

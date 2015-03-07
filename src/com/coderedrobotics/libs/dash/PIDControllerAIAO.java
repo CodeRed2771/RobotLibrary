@@ -45,6 +45,12 @@ public class PIDControllerAIAO {
     DashBoard dashBoard;
     String name;
 
+    private double hoist = 0;
+
+    public void setHoist(double hoist) {
+        this.hoist = hoist;
+    }
+
     private class PIDTask extends TimerTask {
 
         private PIDControllerAIAO m_controller;
@@ -171,6 +177,7 @@ public class PIDControllerAIAO {
                 }
 
                 m_result = (m_P * m_error + m_I * m_totalError + m_D * (m_error - m_prevError));
+                m_result += hoist * m_setpoint;
                 m_prevError = m_error;
 
                 if (m_result > m_maximumOutput) {
