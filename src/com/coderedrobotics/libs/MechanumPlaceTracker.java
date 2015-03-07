@@ -5,6 +5,7 @@
  */
 package com.coderedrobotics.libs;
 
+import com.coderedrobotics.libs.dash.DashBoard;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 
@@ -18,11 +19,12 @@ public class MechanumPlaceTracker extends PlaceTracker {
     public final Encoder rightBackEncoder, rightFrontEncoder, leftFrontEncoder, leftBackEncoder;
     private final Gyro gyro;
     private final double xScale, yScale, rotScale;
+    private DashBoard board;
 
     public MechanumPlaceTracker(
             int rightBackA, int rightBackB, int rightFrontA, int rightFrontB,
             int leftFrontA, int leftFrontB, int leftBackA, int leftBackB, int gyro,
-            double xScale, double yScale, double rotScale) {
+            double xScale, double yScale, double rotScale, DashBoard board) {
 
         rightBackEncoder = new Encoder(rightBackA, rightBackB);
         rightFrontEncoder = new Encoder(rightFrontA, rightFrontB);
@@ -34,6 +36,8 @@ public class MechanumPlaceTracker extends PlaceTracker {
         this.rotScale = rotScale;
 
         this.gyro = new Gyro(gyro);
+        
+        this.board = board;
     }
 
     @Override
@@ -66,6 +70,9 @@ public class MechanumPlaceTracker extends PlaceTracker {
 
         xyrot[2] = rot;
 
+        board.prtln(""+rot, 7);
+        board.prtln(""+gyro.getAngle(), 8);
+        
         return scale(xyrot);
     }
 
