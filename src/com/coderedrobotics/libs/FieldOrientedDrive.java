@@ -34,7 +34,7 @@ public class FieldOrientedDrive extends Drive {
     protected void recalulate(double x, double y, double rot) {
         if (enableFieldOrientedControl) {
             double mag = Math.sqrt(x * x + y * y);
-            double dir = Math.atan2(x, y) - Math.toRadians(pIDSource.pidGet());
+            double dir = Math.atan2(x, y) + Math.toRadians(pIDSource.pidGet());
 
             drive.setXYRot(mag * Math.sin(dir), mag * Math.cos(dir), rot);
         } else {
