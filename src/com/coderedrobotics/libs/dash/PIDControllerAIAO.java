@@ -39,6 +39,8 @@ public class PIDControllerAIAO {
     private double m_error = 0.0;
     private double m_result = 0.0;
     private double m_period = kDefaultPeriod;
+    private double minimumI;
+    private double maximumI;
     PIDSource m_pidInput;
     PIDOutput m_pidOutput;
     java.util.Timer m_controlLoop;
@@ -153,7 +155,6 @@ public class PIDControllerAIAO {
 
         if (enabled) {
             double input = pidInput.pidGet();
-            dashBoard.prtln(name + ":\t" + input, 1);
             double result;
             PIDOutput pidOutput = null;
 
@@ -171,11 +172,8 @@ public class PIDControllerAIAO {
                     }
                 }
 
-                if (((m_totalError + m_error) * m_I < m_maximumOutput)
-                        && ((m_totalError + m_error) * m_I > m_minimumOutput)) {
-                    m_totalError += m_error;
-                }
-
+                m_totalError = Math.min(Math.max((m_totalError + m_error), minimumI / m_I), maximumI / m_I);
+                
                 m_result = (m_P * m_error + m_I * m_totalError + m_D * (m_error - m_prevError));
                 m_result += hoist * m_setpoint;
                 m_prevError = m_error;
@@ -332,6 +330,14 @@ public class PIDControllerAIAO {
         }
         m_minimumOutput = minimumOutput;
         m_maximumOutput = maximumOutput;
+    }
+    
+    public synchronized void setIClip(double minimumI, double maximumI) {
+        if (minimumI > maximumI) {
+            throw new IllegalStateException("Lower bound is greater than upper bound");
+        }
+        this.minimumI = minimumI;
+        this.maximumI = maximumI;
     }
 
     /**

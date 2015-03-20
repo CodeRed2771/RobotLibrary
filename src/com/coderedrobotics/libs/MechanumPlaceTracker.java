@@ -30,18 +30,19 @@ public class MechanumPlaceTracker extends PlaceTracker {
         rightFrontEncoder = new Encoder(rightFrontA, rightFrontB);
         leftFrontEncoder = new Encoder(leftFrontA, leftFrontB);
         leftBackEncoder = new Encoder(leftBackA, leftBackB);
-        
+
         this.xScale = xScale;
         this.yScale = yScale;
         this.rotScale = rotScale;
 
         this.gyro = new Gyro(gyro);
-        
+
         this.board = board;
     }
 
     @Override
     protected double[] updatePosition() {
+
         double rightBackTotal = rightBackEncoder.get(),
                 rightFrontTotal = rightFrontEncoder.get(),
                 leftFrontTotal = leftFrontEncoder.get(),
@@ -54,25 +55,27 @@ public class MechanumPlaceTracker extends PlaceTracker {
         oldRightFront = rightFrontTotal;
         oldLeftFront = leftFrontTotal;
         oldLeftBack = leftBackTotal;
-        
-        System.out.println(
-                "0: " + rightBackTotal +
-                "\t1: " + rightFrontTotal +
-                "\t2: " + leftFrontTotal +
-                "\t3: " + leftBackTotal);
 
         double rawRot = gyro.getAngle();
         double rot = oldRot - rawRot;
         oldRot = rawRot;
 
-        //int errorWheel = calculateWheelError(a, b, c, d, rot, 0);
-        double[] xyrot = calculateXYRot(a, b, c, d);//, errorWheel);
+        int errorWheel = calculateWheelError(a, b, c, d, rot, 0);
+        double[] xyrot = calculateXYRot(a, b, c, d, errorWheel);
 
         xyrot[2] = rot;
 
-        board.prtln(""+rot, 7);
-        board.prtln(""+gyro.getAngle(), 8);
-        
+        if (board != null) {
+            board.prtln("" + rot, 7);
+            board.prtln("" + gyro.getAngle(), 8);
+            board.streamPacket(errorWheel, "pterr");
+            board.streamPacket(getX(), "ptx");
+            board.streamPacket(getY(), "pty");
+            board.streamPacket(getRot(), "ptrot");
+            board.streamPacket(getLateralPIDSource().pidGet(), "ptlat");
+            board.streamPacket(getLinearPIDSource().pidGet(), "ptlin");
+        }
+
         return scale(xyrot);
     }
 
@@ -80,7 +83,7 @@ public class MechanumPlaceTracker extends PlaceTracker {
         xyrot[0] *= xScale;
         xyrot[1] *= yScale;
         //xyrot[2] *= rotScale;
-        
+
         return xyrot;
     }
 
