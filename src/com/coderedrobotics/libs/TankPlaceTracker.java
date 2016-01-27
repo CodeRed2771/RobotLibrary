@@ -6,7 +6,7 @@
 package com.coderedrobotics.libs;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 
 /**
  *
@@ -16,12 +16,12 @@ public class TankPlaceTracker extends PlaceTracker {
 
     private double oldLeft, oldRight, oldRot;
     private final Encoder rightEncoder, leftEncoder;
-    private final Gyro gyro;
+    private final AnalogGyro gyro;
 
     public TankPlaceTracker(int leftA, int leftB, int rightA, int rightB) {
         leftEncoder = new Encoder(leftB, leftA);
         rightEncoder = new Encoder(rightA, rightB);
-        gyro = new Gyro(0);
+        gyro = new AnalogGyro(0);
     }
 
     @Override

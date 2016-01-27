@@ -7,7 +7,7 @@ package com.coderedrobotics.libs;
 
 import com.coderedrobotics.libs.dash.DashBoard;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 
 /**
  *
@@ -17,7 +17,7 @@ public class MechanumPlaceTracker extends PlaceTracker {
 
     private double oldRightBack, oldRightFront, oldLeftFront, oldLeftBack, oldRot;
     public final Encoder rightBackEncoder, rightFrontEncoder, leftFrontEncoder, leftBackEncoder;
-    private final Gyro gyro;
+    private final AnalogGyro gyro;
     private final double xScale, yScale, rotScale;
     private DashBoard board;
 
@@ -35,7 +35,7 @@ public class MechanumPlaceTracker extends PlaceTracker {
         this.yScale = yScale;
         this.rotScale = rotScale;
 
-        this.gyro = new Gyro(gyro);
+        this.gyro = new AnalogGyro(gyro);
 
         this.board = board;
     }

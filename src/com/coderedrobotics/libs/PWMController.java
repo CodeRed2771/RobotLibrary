@@ -64,7 +64,7 @@ public class PWMController implements PIDOutput{
         }
     }
 
-    public Victor getWIPController() {
+    public Victor getWPIController() {
         return controller;
     }
 

@@ -5,6 +5,7 @@
 package com.coderedrobotics.libs;
 
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 
 /**
  *
@@ -76,6 +77,16 @@ public abstract class PlaceTracker {
                 this.pt = pt;
                 return this;
             }
+
+            @Override
+            public void setPIDSourceType(PIDSourceType pidSource) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public PIDSourceType getPIDSourceType() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
         }.init(this);
     }
 
@@ -93,6 +104,16 @@ public abstract class PlaceTracker {
                 this.pt = pt;
                 return this;
             }
+
+            @Override
+            public void setPIDSourceType(PIDSourceType pidSource) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public PIDSourceType getPIDSourceType() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
         }.init(this);
     }
 
@@ -109,6 +130,16 @@ public abstract class PlaceTracker {
             public PIDSource init(PlaceTracker pt) {
                 this.pt = pt;
                 return this;
+            }
+
+            @Override
+            public void setPIDSourceType(PIDSourceType pidSource) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public PIDSourceType getPIDSourceType() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         }.init(this);
     }

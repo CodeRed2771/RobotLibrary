@@ -19,7 +19,7 @@ public class MechanumDrive extends Drive {
     @Override
     protected void recalulate(double x, double y, double rot) {
         
-        System.out.println(x);
+//         System.out.println(x);
         
         double leftf, leftb, rightf, rightb;
         double max;

@@ -72,6 +72,10 @@ public class HID {
     public static ButtonState newButtonState() {
         return new ButtonState();
     }
+    
+    public void setRumble(Joystick.RumbleType r, float value) {
+        joystick.setRumble(r, value);
+    }
 
     public static class Button {
 

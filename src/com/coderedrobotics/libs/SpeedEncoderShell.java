@@ -2,6 +2,7 @@ package com.coderedrobotics.libs;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 
 /**
  *
@@ -30,5 +31,15 @@ public class SpeedEncoderShell implements PIDSource {
         lastPos = encoder.getRaw();
         lastTime = System.currentTimeMillis();
         return currentSpeed;
+    }
+
+    @Override
+    public void setPIDSourceType(PIDSourceType pidSource) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PIDSourceType getPIDSourceType() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
