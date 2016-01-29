@@ -6,16 +6,16 @@ package com.coderedrobotics.libs;
  */
 public class TankDrive extends Drive {
 
-    private final PWMController lVictor, rVictor;
+    private final SettableController lVictor, rVictor;
 
-    public TankDrive(PWMController lVictor, PWMController rVictor) {
+    public TankDrive(SettableController lVictor, SettableController rVictor) {
         this.lVictor = lVictor;
         this.rVictor = rVictor;
     }
 
     @Override
     protected void recalulate(double x, double y, double rot) {
-        lVictor.set(-y - rot);
+        lVictor.set(y + rot);
         rVictor.set(y - rot);
     }
 }

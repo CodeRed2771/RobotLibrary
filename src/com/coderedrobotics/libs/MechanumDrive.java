@@ -6,10 +6,10 @@ package com.coderedrobotics.libs;
  */
 public class MechanumDrive extends Drive {
     
-    private final PWMController frontL, frontR, rearL, rearR;
+    private final SettableController frontL, frontR, rearL, rearR;
 
-    public MechanumDrive(PWMController frontL, PWMController frontR, 
-            PWMController rearL, PWMController rearR) {
+    public MechanumDrive(SettableController frontL, SettableController frontR, 
+            SettableController rearL, SettableController rearR) {
         this.frontL = frontL;
         this.frontR = frontR;
         this.rearL = rearL;

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Victor;
  *
  * @author Michael
  */
-public class PWMController implements PIDOutput{
+public class PWMController implements PIDOutput, SettableController {
 
     private Victor controller;
     private final int port;
@@ -39,6 +39,7 @@ public class PWMController implements PIDOutput{
         return port;
     }
 
+    @Override
     public void set(double speed) {
         if (!virtualized) {
             controller.set(speed * (backwards ? -1 : 1));
