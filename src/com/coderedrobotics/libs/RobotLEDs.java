@@ -1,12 +1,14 @@
 package com.coderedrobotics.libs;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Michael
  */
-public class ControlsBoxLEDs {
+public class RobotLEDs implements Runnable {
 
     private final Relay greenandred;
     private final Relay blue;
@@ -28,87 +30,112 @@ public class ControlsBoxLEDs {
     private int partyTick = 0;
     private boolean strobe2color = false;
     private boolean error = false;
+    private boolean locked = false;
 
-    public ControlsBoxLEDs(int relay1, int relay2) {
+    public RobotLEDs(int relay1, int relay2) {
         greenandred = new Relay(relay1);
         blue = new Relay(relay2);
+        Thread daemon = new Thread(this);
+        daemon.setDaemon(true);
+        daemon.setName("LED Thread");
+        daemon.setPriority(Thread.MIN_PRIORITY);
+        daemon.start();
     }
 
     public void activateDisabled() {
-        color = Color.GREEN;
-        update();
+        if (!locked) {
+            color = Color.GREEN;
+            update();
+        }
     }
 
     public void activateTeleop() {
-        DriverStation ds = DriverStation.getInstance();
-        color = DriverStation.Alliance.Blue == ds.getAlliance() ? Color.BLUE : 
-                DriverStation.Alliance.Red == ds.getAlliance() ? Color.RED : Color.MAGENTA;
-        update();
+        if (!locked) {
+            DriverStation ds = DriverStation.getInstance();
+            color = DriverStation.Alliance.Blue == ds.getAlliance() ? Color.BLUE
+                    : DriverStation.Alliance.Red == ds.getAlliance() ? Color.RED : Color.MAGENTA;
+            update();
+        }
     }
 
     public void activateAutonomous() {
-        color = AUTONOMOUS_COLOR;
-        update();
+        if (!locked) {
+            color = AUTONOMOUS_COLOR;
+            update();
+        }
     }
 
     public void activateTest() {
-        color = TEST_COLOR;
-        update();
+        if (!locked) {
+            color = TEST_COLOR;
+            update();
+        }
     }
 
     public void turnOff() {
-        color = Color.BLACK;
-        update();
+        if (!locked) {
+            color = Color.BLACK;
+            update();
+        }
     }
 
     public void setHz(double hz) {
-        this.hz = hz;
+        if (!locked) {
+            this.hz = hz;
+        }
     }
 
     public void blinkSlow() {
-        hz = SLOW_BLINK_HZ;
-        update();
+        if (!locked) {
+            hz = SLOW_BLINK_HZ;
+            update();
+        }
     }
 
     public void blinkFast() {
-        hz = FAST_BLINK_HZ;
-        update();
+        if (!locked) {
+            hz = FAST_BLINK_HZ;
+            update();
+        }
     }
 
-    public void blinkTick() {
-        update();
-    }
-    
-    public void error() {
-        if (!error) {
-            error = true;
-            secondary = color;
-        }
-        color = Color.MAGENTA;
-        hz = 1;
-        strobe2color = true;
-        update();
-    }
-    
-    public void encoderError() {
-        if (!error) {
-            error = true;
-            secondary = color;
-        }
-        color = Color.YELLOW;
-        hz = 1;
-        strobe2color = true;
-        update();
-    }
-    
-    public void disableError() {
-        error = false;
-        color = secondary;
-        strobe2color = false;
-        hz = 0;
-        update();
+    public void lock() {
+        locked = true;
     }
 
+    public void unlock() {
+        locked = false;
+    }
+
+//    public void error() {
+//        if (!error) {
+//            error = true;
+//            secondary = color;
+//        }
+//        color = Color.MAGENTA;
+//        hz = 1;
+//        strobe2color = true;
+//        update();
+//    }
+//    
+//    public void encoderError() {
+//        if (!error) {
+//            error = true;
+//            secondary = color;
+//        }
+//        color = Color.YELLOW;
+//        hz = 1;
+//        strobe2color = true;
+//        update();
+//    }
+//    
+//    public void disableError() {
+//        error = false;
+//        color = secondary;
+//        strobe2color = false;
+//        hz = 0;
+//        update();
+//    }
     public void party() {
         hz = 15;
         if (partyTick < 10) {
@@ -133,19 +160,21 @@ public class ControlsBoxLEDs {
     }
 
     public void setColor(Color color) {
-        this.color = color;
-        hz = 0;
-        update();
+        if (!locked) {
+            this.color = color;
+            hz = 0;
+            update();
+        }
     }
 
-    private void update() {
-        boolean on = hz == 0 ? true : (((System.currentTimeMillis()/1000d) * hz) % 1) < 0.5;
-        
+    private synchronized void update() {
+        boolean on = hz == 0 ? true : (((System.currentTimeMillis() / 1000d) * hz) % 1) < 0.5;
+
         if (strobe2color) {
             color = on ? color : secondary;
             on = true;
         }
-        
+
         boolean r = (color == Color.WHITE || color == Color.RED || color == Color.MAGENTA
                 || color == Color.YELLOW) && on;
         boolean g = (color == Color.WHITE || color == Color.GREEN || color == Color.YELLOW
@@ -155,10 +184,23 @@ public class ControlsBoxLEDs {
         greenandred.setForward(!g);
         greenandred.setReverse(r);
         blue.setReverse(b);
-        
+
 //        greenandred.setDirection(r && g ? Relay.Direction.kBoth
 //                : r ? Relay.Direction.kForward : Relay.Direction.kReverse);
 //        greenandred.set(r || g ? Relay.Value.kOn : Relay.Value.kOff);
 //        blue.set(b ? Relay.Value.kOn : Relay.Value.kOff);
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            update();
+            
+            try {
+                Thread.sleep((long) (1000d / hz != 0 ? hz : 1));
+            } catch (InterruptedException ex) {
+                Logger.getLogger(RobotLEDs.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

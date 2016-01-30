@@ -17,7 +17,7 @@ public class PWMSplitter2X implements SettableController {
     
     public PWMSplitter2X(int portA, int portB, boolean backwards, Encoder encoder) {
         controllerA = new PWMController(portA, backwards, encoder);
-        controllerB = new PWMController(portA, backwards, encoder);
+        controllerB = new PWMController(portB, backwards, encoder);
     }
     
     @Override
