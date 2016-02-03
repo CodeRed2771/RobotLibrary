@@ -17,16 +17,21 @@ public class PIDDerivativeCalculator implements PIDSource{
     PIDSource pIDSource;
     DerivativeCalculator derivativeCalculator;
 
-    public PIDDerivativeCalculator(PIDSource pIDSource) {
+    public PIDDerivativeCalculator(PIDSource pIDSource, int minSampleTime) {
         if (pIDSource == null) throw new NullPointerException("pIDSource");
         this.pIDSource = pIDSource;
-        derivativeCalculator = new DerivativeCalculator(10);
+        derivativeCalculator = new DerivativeCalculator(minSampleTime);
     }
 
+    public void sampleTimeSet(int minSampleTime) {
+        derivativeCalculator.minTime = minSampleTime;
+    }
+    
     @Override
     public double pidGet() {
         return derivativeCalculator.calculate(pIDSource.pidGet());
     }
+    
 
     @Override
     public void setPIDSourceType(PIDSourceType pidSource) {
