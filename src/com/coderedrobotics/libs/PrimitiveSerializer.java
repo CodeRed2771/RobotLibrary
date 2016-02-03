@@ -1,4 +1,4 @@
-package com.coderedrobotics.libs.dash;
+package com.coderedrobotics.libs;
 
 /**
  * The PrimitiveSerializer takes data and turns it into byte arrays, or visa
