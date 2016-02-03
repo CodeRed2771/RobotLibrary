@@ -1,6 +1,5 @@
 package com.coderedrobotics.libs;
 
-import com.coderedrobotics.libs.dash.DashBoard;
 
 /**
  *
@@ -8,17 +7,11 @@ import com.coderedrobotics.libs.dash.DashBoard;
  */
 public class VirtualizablePsuedoDigitalInput extends VirtualizableAnalogInput {
 
-    private DashBoard board;
-
-    public VirtualizablePsuedoDigitalInput(int port, DashBoard board) {
+    public VirtualizablePsuedoDigitalInput(int port) {
         super(port);
-        this.board = board;
     }
 
     public boolean getState() {
-        if (board != null) {
-            board.prtln("" + get(), 5);
-        }
         return super.get() > 2;
     }
 }

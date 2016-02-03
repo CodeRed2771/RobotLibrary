@@ -5,7 +5,6 @@
  */
 package com.coderedrobotics.libs;
 
-import com.coderedrobotics.libs.dash.DashBoard;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.AnalogGyro;
 
@@ -19,12 +18,11 @@ public class MechanumPlaceTracker extends PlaceTracker {
     public final Encoder rightBackEncoder, rightFrontEncoder, leftFrontEncoder, leftBackEncoder;
     private final AnalogGyro gyro;
     private final double xScale, yScale, rotScale;
-    private DashBoard board;
 
     public MechanumPlaceTracker(
             int rightBackA, int rightBackB, int rightFrontA, int rightFrontB,
             int leftFrontA, int leftFrontB, int leftBackA, int leftBackB, int gyro,
-            double xScale, double yScale, double rotScale, DashBoard board) {
+            double xScale, double yScale, double rotScale) {
 
         rightBackEncoder = new Encoder(rightBackA, rightBackB);
         rightFrontEncoder = new Encoder(rightFrontA, rightFrontB);
@@ -36,8 +34,6 @@ public class MechanumPlaceTracker extends PlaceTracker {
         this.rotScale = rotScale;
 
         this.gyro = new AnalogGyro(gyro);
-
-        this.board = board;
     }
 
     @Override
@@ -64,18 +60,6 @@ public class MechanumPlaceTracker extends PlaceTracker {
         double[] xyrot = calculateXYRot(a, b, c, d, errorWheel);
 
         xyrot[2] = rot;
-
-        if (board != null) {
-            board.prtln("" + rot, 7);
-            board.prtln("" + gyro.getAngle(), 8);
-            board.streamPacket(errorWheel, "pterr");
-            board.streamPacket(getX(), "ptx");
-            board.streamPacket(getY(), "pty");
-            board.streamPacket(getRot(), "ptrot");
-            board.streamPacket(getLateralPIDSource().pidGet(), "ptlat");
-            board.streamPacket(getLinearPIDSource().pidGet(), "ptlin");
-        }
-
         return scale(xyrot);
     }
 
