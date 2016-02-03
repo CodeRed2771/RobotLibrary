@@ -4,8 +4,9 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-package com.coderedrobotics.libs.dash;
+package com.coderedrobotics.libs;
 
+import com.coderedrobotics.libs.dash.*;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import java.util.TimerTask;
@@ -42,8 +43,8 @@ public class PIDControllerAIAO {
     PIDSource m_pidInput;
     PIDOutput m_pidOutput;
     java.util.Timer m_controlLoop;
-    DashBoard dashBoard;
     String name;
+    private boolean network;
 
     private double hoist = 0;
 
@@ -81,7 +82,7 @@ public class PIDControllerAIAO {
      */
     public PIDControllerAIAO(double Kp, double Ki, double Kd,
             PIDSource source, PIDOutput output, double period,
-            DashBoard dashBoard, String name) {
+            boolean useNetwork, String name) {
 
         if (source == null) {
             throw new NullPointerException("Null PIDSource was given");
@@ -99,11 +100,15 @@ public class PIDControllerAIAO {
         m_pidInput = source;
         m_pidOutput = output;
         m_period = period;
-
-        m_controlLoop.schedule(new PIDTask(this), 0L, (long) (m_period * 1000));
-
-        this.dashBoard = dashBoard;
+        
         this.name = name;
+        this.network = useNetwork;
+        if (useNetwork) {
+            System.out.println("ADDED CONTROLLER");
+            PIDNetworkTuner.getInstance().addPIDController(this);
+        }
+        
+        m_controlLoop.schedule(new PIDTask(this), 0L, (long) (m_period * 1000));
     }
 
     /**
@@ -118,9 +123,9 @@ public class PIDControllerAIAO {
      */
     public PIDControllerAIAO(double Kp, double Ki, double Kd,
             PIDSource source, PIDOutput output,
-            DashBoard dashBoard, String name) {
+            boolean useNetwork, String name) {
         this(Kp, Ki, Kd, source, output, kDefaultPeriod,
-                dashBoard, name);
+                useNetwork, name);
     }
 
     /**
@@ -187,39 +192,36 @@ public class PIDControllerAIAO {
                 pidOutput = m_pidOutput;
                 result = m_result;
 
-                if (dashBoard != null) {
-                    dashBoard.streamPacket(m_result, "PIDO" + name);
-                    dashBoard.streamPacket(m_error, "PIDE" + name);
+                if (network) {
+//                    System.out.println("Sending update... " + name);
+                    PIDNetworkTuner.getInstance().update(name, result, m_error, robotP, robotI, robotD, m_setpoint);
                 }
             }
 
             pidOutput.pidWrite(result);
         }
 
-        if (dashBoard != null) {
-            if (dashBoard.getRegister("PIDCP" + name) == 1) {
-                m_P = dashBoard.getRegister("PIDP" + name);
+        if (network) {
+            PIDNetworkTuner tuner = PIDNetworkTuner.getInstance();
+            if (tuner.networkHasP(name)) {
+                m_P = tuner.getP(name);
             } else {
                 m_P = robotP;
-                dashBoard.setRegister("PIDP" + name, m_P);
             }
-            if (dashBoard.getRegister("PIDCI" + name) == 1) {
-                m_I = dashBoard.getRegister("PIDI" + name);
+            if (tuner.networkHasI(name)) {
+                m_I = tuner.getI(name);
             } else {
                 m_I = robotI;
-                dashBoard.setRegister("PIDI" + name, m_I);
             }
-            if (dashBoard.getRegister("PIDCD" + name) == 1) {
-                m_D = dashBoard.getRegister("PIDD" + name);
+            if (tuner.networkHasD(name)) {
+                m_D = tuner.getD(name);
             } else {
                 m_D = robotD;
-                dashBoard.setRegister("PIDD" + name, m_D);
             }
-            if (dashBoard.getRegister("PIDCS" + name) == 1) {
-                m_setpoint = dashBoard.getRegister("PIDS" + name);
+            if (tuner.networkHasSetpoint(name)) {
+                m_setpoint = tuner.getSetpoint(name);
             } else {
                 m_setpoint = robotS;
-                dashBoard.setRegister("PIDS" + name, m_setpoint);
             }
         } else {
             m_P = robotP;
