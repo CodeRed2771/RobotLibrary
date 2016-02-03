@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 package com.coderedrobotics.libs;
 
-import com.coderedrobotics.libs.dash.*;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import java.util.TimerTask;
