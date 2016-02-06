@@ -19,7 +19,7 @@ public class LogitechF310 extends HID {
     public static final Button STICK_LEFT_UP = new AxisButton(STICK_LEFT_Y, true);
     public static final Button STICK_LEFT_DOWN = new AxisButton(STICK_LEFT_Y, false);
     public static final Button TRIGGER_LEFT = new AxisButton(TRIGGER_LEFT_AXIS, true);
-    public static final Button TRIGGER_RIGHT = new AxisButton(TRIGGER_RIGHT_AXIS, false);
+    public static final Button TRIGGER_RIGHT = new AxisButton(TRIGGER_RIGHT_AXIS, true);
     public static final Button STICK_RIGHT_LEFT = new AxisButton(STICK_RIGHT_X, true);
     public static final Button STICK_RIGHT_RIGHT = new AxisButton(STICK_RIGHT_X, false);
     public static final Button STICK_RIGHT_UP = new AxisButton(STICK_RIGHT_Y, true);
