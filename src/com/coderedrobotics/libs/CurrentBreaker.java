@@ -17,23 +17,23 @@ public class CurrentBreaker {
     long ignoreTime = -1;
     long ignoreDuration = -1;
     
-    public CurrentBreaker(SettableController sc, int portnum, double currentThreshold, int timeOut) {
+    public CurrentBreaker(SettableController sc, int portnum, double currentThreshold, int timeOut, int ignoreDuration) {
         pdp = new PowerDistributionPanel();
         this.sc = sc == null ? new NullController() : sc;
         this.portnum = portnum;
         this.currentThreshold = currentThreshold;
         this.timeOut = timeOut;
+        this.ignoreDuration = ignoreDuration;
     }
-
+    public CurrentBreaker(SettableController sc, int portnum, double currentThreshold, int timeOut) {
+    	this(sc, portnum, currentThreshold, timeOut, -1);
+    }
     /**
      * returns true if the breaker exceeds the allowed value.
      * @return breaker tripped
      */
     public boolean step() {
-        if (ignoreDuration != -1) {
-            ignoreTime = System.currentTimeMillis() + ignoreDuration;
-            ignoreDuration = -1;
-        }
+  
         if (System.currentTimeMillis() <= ignoreTime) {
             return false;
         }
@@ -66,6 +66,9 @@ public class CurrentBreaker {
         tripped = false;
         motorOff = false;
         motorOffTime = -1;
+        if (ignoreDuration != -1) {
+            ignoreTime = System.currentTimeMillis() + ignoreDuration;
+        }
     }
     
     public void ignoreFor(long time) {
