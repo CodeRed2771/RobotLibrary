@@ -3,6 +3,7 @@ package com.coderedrobotics.libs;
 import com.coderedrobotics.libs.SettableController;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CurrentBreaker {
 
@@ -15,7 +16,7 @@ public class CurrentBreaker {
     boolean tripped = false;
     long motorOffTime = -1;
     long ignoreTime = -1;
-    long ignoreDuration = -1;
+    long ignoreDuration;
     
     public CurrentBreaker(SettableController sc, int portnum, double currentThreshold, int timeOut, int ignoreDuration) {
         pdp = new PowerDistributionPanel();
@@ -40,7 +41,8 @@ public class CurrentBreaker {
         
         if (!tripped) {
             tripped = (pdp.getCurrent(portnum) > currentThreshold);
-            Logger.getInstance().log(Logger.Level.ERROR, 1, String.valueOf(pdp.getCurrent(portnum)));
+            //Logger.getInstance().log(Logger.Level.ERROR, 1, String.valueOf(pdp.getCurrent(portnum)));
+            //SmartDashboard.putBoolean("Tripped", tripped);
             if (!tripped) {
                 return false;
             }
@@ -68,6 +70,10 @@ public class CurrentBreaker {
         motorOffTime = -1;
         if (ignoreDuration != -1) {
             ignoreTime = System.currentTimeMillis() + ignoreDuration;
+            //SmartDashboard.putNumber("ignoreDuration", ignoreDuration);
+            //SmartDashboard.putNumber("IgnoreTime",  ignoreTime);
+            //Logger.getInstance().log(Logger.Level.INFO,1,"ignoreDuration is "+ignoreDuration);
+            //Logger.getInstance().log(Logger.Level.INFO, 1, "Ignore Time Reset to "+ignoreTime);
         }
     }
     
