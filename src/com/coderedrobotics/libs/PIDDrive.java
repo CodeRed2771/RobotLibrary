@@ -24,24 +24,20 @@ public class PIDDrive extends Drive {
             double yp, double yi, double yd,
             double rotp, double roti, double rotd,
             double xmax, double ymax, double rotmax,
-            double xhoist, double yhoist, double rothoist, boolean useNetwork) {
+            double xf, double yf, double rotf, boolean useNetwork) {
 
         this.xmax = xmax;
         this.ymax = ymax;
         this.rotmax = rotmax;
         
         this.outDrive = outDrive;
-        xPID = new PIDControllerAIAO(xp, xi, xd, xSource, outDrive.getXPIDOutput(), useNetwork, "X drive");
-        yPID = new PIDControllerAIAO(yp, yi, yd, ySource, outDrive.getYPIDOutput(), useNetwork, "Y drive");
-        rotPID = new PIDControllerAIAO(rotp, roti, rotd, rotSource, outDrive.getRotPIDOutput(), useNetwork, "rot drive");
+        xPID = new PIDControllerAIAO(xp, xi, xd, xf, xSource, outDrive.getXPIDOutput(), useNetwork, "X drive");
+        yPID = new PIDControllerAIAO(yp, yi, yd, yf, ySource, outDrive.getYPIDOutput(), useNetwork, "Y drive");
+        rotPID = new PIDControllerAIAO(rotp, roti, rotd, rotf, rotSource, outDrive.getRotPIDOutput(), useNetwork, "rot drive");
 
         xPID.enable();
         yPID.enable();
         rotPID.enable();
-
-        xPID.setHoist(xhoist);
-        yPID.setHoist(yhoist);
-        rotPID.setHoist(rothoist);
         
         xPID.setInputRange(-xmax, xmax);
         yPID.setInputRange(-ymax, ymax);

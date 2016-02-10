@@ -170,23 +170,27 @@ class PIDNetworkTuner implements Runnable {
                     String name = dataString[0];
                     PIDData pidData = controllerData.get(name);
                     if (dataString[1].equals("-")) {
-                        pidData.pc = true;
+                        pidData.pc = false;
                     } else {
+                        pidData.pc = true;
                         pidData.p = Double.parseDouble(dataString[1]);
                     }
                     if (dataString[2].equals("-")) {
-                        pidData.ic = true;
+                        pidData.ic = false;
                     } else {
+                        pidData.ic = true;
                         pidData.i = Double.parseDouble(dataString[2]);
                     }
                     if (dataString[3].equals("-")) {
-                        pidData.dc = true;
+                        pidData.dc = false;
                     } else {
+                        pidData.dc = true;
                         pidData.d = Double.parseDouble(dataString[3]);
                     }
                     if (dataString[4].equals("-")) {
-                        pidData.sc = true;
+                        pidData.sc = false;
                     } else {
+                        pidData.sc = true;
                         pidData.setpoint = Double.parseDouble(dataString[4]);
                     }
                 }
