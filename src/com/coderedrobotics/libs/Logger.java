@@ -47,7 +47,7 @@ public class Logger {
             leds.setColor(Color.YELLOW);
             leds.lock();
         }
-        DriverStation.reportError(s, false); // ?????
+        DriverStation.reportError(s + "\n", false); // ?????
         System.err.println(s);
     }
 
