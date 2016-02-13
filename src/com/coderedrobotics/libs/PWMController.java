@@ -17,6 +17,7 @@ public class PWMController implements PIDOutput, SettableController {
     private Encoder encoder;
     private long time = -1;
     private int lastEncoderReading = 0;
+    private boolean encoderError = false;
 
     public PWMController(int port, boolean backwards) {
         this(port, backwards, null);
@@ -54,15 +55,23 @@ public class PWMController implements PIDOutput, SettableController {
             if (Math.abs(encoderReading - lastEncoderReading) < 4) {
                 if (Math.abs(speed) > 0.3) {
                     if (time == -1) {
-                        time = System.currentTimeMillis();
-                    } else if (System.currentTimeMillis() - time > 250) {
-                        System.out.println("Motor port " + port + " encoder error");
+                        time = System.currentTimeMillis() + 250;
+                    } else if (System.currentTimeMillis() > time) {
+                        encoderError = true;
                     }
+                } else {
+                	time = -1;
                 }
             } else {
                 lastEncoderReading = encoderReading;
+                encoderError = false;
+                time = -1;
             }
         }
+    }
+    
+    public boolean encoderHasError() {
+    	return encoderError;
     }
 
     public Victor getWPIController() {

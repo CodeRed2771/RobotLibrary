@@ -35,12 +35,12 @@ public class PIDDerivativeCalculator implements PIDSource{
 
     @Override
     public void setPIDSourceType(PIDSourceType pidSource) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // do absolutely nothing.
     }
 
     @Override
     public PIDSourceType getPIDSourceType() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return PIDSourceType.kDisplacement;
     }
     
 }
