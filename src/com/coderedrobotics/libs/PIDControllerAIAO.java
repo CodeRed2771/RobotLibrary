@@ -450,7 +450,7 @@ public class PIDControllerAIAO implements PIDInterface, LiveWindowSendable {
         robotP = p;
         robotI = i;
         robotD = d;
-        robotF = f;
+        m_F = f;
 
         if (table != null) {
             table.putNumber("p", p);
