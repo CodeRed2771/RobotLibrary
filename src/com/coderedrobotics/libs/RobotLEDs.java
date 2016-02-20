@@ -197,7 +197,7 @@ public class RobotLEDs implements Runnable {
             update();
             
             try {
-                Thread.sleep((long) (1000d / hz != 0 ? hz : 1));
+                Thread.sleep((long) (1000d / (hz != 0 ? hz : 1)));
             } catch (InterruptedException ex) {
                 Logger.getLogger(RobotLEDs.class.getName()).log(Level.SEVERE, null, ex);
             }

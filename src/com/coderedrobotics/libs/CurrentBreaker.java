@@ -81,6 +81,10 @@ public class CurrentBreaker {
         ignoreDuration = time;
     }
     
+    public double getCurrent() {
+        return pdp.getCurrent(portnum);
+    }
+    
     private class NullController implements SettableController {
 
         @Override

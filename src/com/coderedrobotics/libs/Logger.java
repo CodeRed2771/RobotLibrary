@@ -50,6 +50,10 @@ public class Logger {
         DriverStation.reportError(s + "\n", false); // ?????
         System.err.println(s);
     }
+    
+    public void log(String message) {
+        log(Level.INFO, 000, message);
+    }
 
     private String levelToString(Level level) {
         switch (level.ordinal()) {
