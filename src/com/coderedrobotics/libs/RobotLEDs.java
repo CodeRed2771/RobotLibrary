@@ -22,7 +22,7 @@ public class RobotLEDs implements Runnable {
     private Color secondary = Color.RED;
     private static final Color AUTONOMOUS_COLOR = Color.WHITE;
     private static final Color TELEOP_COLOR = Color.RED;
-    private static final Color TEST_COLOR = Color.CYAN;
+    private static final Color TEST_COLOR = Color.YELLOW;
     private static final int SLOW_BLINK_HZ = 1;
     private static final int FAST_BLINK_HZ = 5;
 
@@ -166,9 +166,17 @@ public class RobotLEDs implements Runnable {
             update();
         }
     }
+    
+    public void setColor(Color color, int hz) {
+        if (!locked) {
+            this.color = color;
+            this.hz = hz;
+            update();
+        }
+    }
 
     private synchronized void update() {
-        boolean on = hz == 0 ? true : (((System.currentTimeMillis() / 1000d) * hz) % 1) < 0.5;
+        boolean on = hz == 0 ? true : (((System.currentTimeMillis() / 1000d) * hz) % 1) < 0.3;
 
         if (strobe2color) {
             color = on ? color : secondary;
@@ -197,7 +205,7 @@ public class RobotLEDs implements Runnable {
             update();
             
             try {
-                Thread.sleep((long) (1000d / (hz != 0 ? hz : 1)));
+                Thread.sleep((long) 20);
             } catch (InterruptedException ex) {
                 Logger.getLogger(RobotLEDs.class.getName()).log(Level.SEVERE, null, ex);
             }
