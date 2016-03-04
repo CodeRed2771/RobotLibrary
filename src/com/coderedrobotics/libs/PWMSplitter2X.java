@@ -1,12 +1,13 @@
 package com.coderedrobotics.libs;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDOutput;
 
 /**
  *
  * @author michael
  */
-public class PWMSplitter2X implements SettableController {
+public class PWMSplitter2X  implements PIDOutput, SettableController {
     
     private PWMController controllerA;
     private PWMController controllerB;
@@ -34,4 +35,8 @@ public class PWMSplitter2X implements SettableController {
         return controllerB;
     }
     
+    @Override
+    public void pidWrite(double output) {
+        set(output);
+    }
 }
