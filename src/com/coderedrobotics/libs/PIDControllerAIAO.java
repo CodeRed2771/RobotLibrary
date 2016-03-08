@@ -346,11 +346,11 @@ public class PIDControllerAIAO implements PIDInterface, LiveWindowSendable {
                 result = m_result;
 
                 // Update the buffer.
-                m_buf.push(m_error);
+                m_buf.addFirst(m_error); 
                 m_bufTotal += m_error;
                 // Remove old elements when the buffer is full.
                 if (m_buf.size() > m_bufLength) {
-                    m_bufTotal -= m_buf.pop();
+                    m_bufTotal -= m_buf.removeLast();
                 }
                 if (network) {
                     PIDNetworkTuner.getInstance().update(name, result, m_error, robotP, robotI, robotD, m_setpoint);
@@ -720,7 +720,7 @@ public class PIDControllerAIAO implements PIDInterface, LiveWindowSendable {
 
         // Cut the existing buffer down to size if needed.
         while (m_buf.size() > bufLength) {
-            m_bufTotal -= m_buf.pop();
+            m_bufTotal -= m_buf.removeLast();
         }
     }
 
