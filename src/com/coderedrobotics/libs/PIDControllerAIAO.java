@@ -654,7 +654,8 @@ public class PIDControllerAIAO implements PIDInterface, LiveWindowSendable {
      * @return True if {@link #getAvgError()} is currently valid.
      */
     private synchronized boolean isAvgErrorValid() {
-        return m_buf.size() != 0;
+        // return m_buf.size() != 0;
+    	return m_buf.size() >= m_bufLength; // make sure buffer is full DVV 3/12/16
     }
 
     /**
