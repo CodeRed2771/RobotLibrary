@@ -578,6 +578,7 @@ public class PIDControllerAIAO implements PIDInterface, LiveWindowSendable {
         }
 
         m_buf.clear();
+        m_bufTotal = 0.0; // ADDED 3/17/16 DVV
 
         if (table != null) {
             table.putNumber("setpoint", m_setpoint);
