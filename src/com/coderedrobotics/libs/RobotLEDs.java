@@ -31,6 +31,7 @@ public class RobotLEDs implements Runnable {
     private boolean strobe2color = false;
     private boolean error = false;
     private boolean locked = false;
+    private int tempBlinkCount = 0;
 
     public RobotLEDs(int relay1, int relay2) {
         greenandred = new Relay(relay1);
@@ -166,13 +167,27 @@ public class RobotLEDs implements Runnable {
             update();
         }
     }
-    
+
     public void setColor(Color color, int hz) {
         if (!locked) {
             this.color = color;
             this.hz = hz;
             update();
         }
+    }
+
+    public void blinkThrice(Color color, int hz) {
+        if (!locked) {
+            tempBlinkCount = 3;
+            this.hz = hz;
+            this.secondary = this.color;
+            this.color = color;
+            update();
+        }
+    }
+
+    public void blinkThrice(Color color) {
+        blinkThrice(color, 1);
     }
 
     private synchronized void update() {
@@ -203,6 +218,15 @@ public class RobotLEDs implements Runnable {
     public void run() {
         while (true) {
             update();
+
+            if (tempBlinkCount != 0) {
+                tempBlinkCount--;
+                if (tempBlinkCount == 0) {
+                    this.hz = 0;
+                    this.color = this.secondary;
+                    update();
+                }
+            }
             
             try {
                 Thread.sleep((long) 20);
