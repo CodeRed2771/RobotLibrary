@@ -14,16 +14,20 @@ package com.coderedrobotics.libs;
 public class Timer {
 
     private int stage;
-    private long startTime;
+    private long endTime;
 
     public Timer() {
 
     }
 
     public void resetTimer(long time) {
-        startTime = System.currentTimeMillis() + time;
+    	setTimer(time);
     }
 
+    public void setTimer(long time) {
+    	endTime = System.currentTimeMillis() + time;
+    }
+    
     public void setTimerAndAdvanceStage(long time) {
     	resetTimer(time);
     	nextStage();
@@ -41,7 +45,7 @@ public class Timer {
     }
     
     public boolean ready() {
-        return startTime < System.currentTimeMillis();
+        return endTime < System.currentTimeMillis();
     }
 
     public int getStage() {
