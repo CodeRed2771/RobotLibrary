@@ -32,7 +32,8 @@ public class RobotLEDs implements Runnable {
     private boolean error = false;
     private boolean locked = false;
     private int tempBlinkCount = 0;
-
+    private long tempBlinkTimeout = 0;
+    
     public RobotLEDs(int relay1, int relay2) {
         greenandred = new Relay(relay1);
         blue = new Relay(relay2);
@@ -220,10 +221,12 @@ public class RobotLEDs implements Runnable {
             update();
 
             if (tempBlinkCount != 0) {
-                tempBlinkCount--;
-                if (tempBlinkCount == 0) {
+                if (tempBlinkTimeout == 0) {
+                    tempBlinkTimeout = (long) (System.currentTimeMillis() + (1 / hz) * tempBlinkCount);
+                } else if (System.currentTimeMillis() > tempBlinkTimeout) {
                     this.hz = 0;
                     this.color = this.secondary;
+                    tempBlinkCount = 0;
                     update();
                 }
             }
