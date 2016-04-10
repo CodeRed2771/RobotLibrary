@@ -222,11 +222,12 @@ public class RobotLEDs implements Runnable {
 
             if (tempBlinkCount != 0) {
                 if (tempBlinkTimeout == 0) {
-                    tempBlinkTimeout = (long) (System.currentTimeMillis() + (1 / hz) * tempBlinkCount);
+                    tempBlinkTimeout = (long) (System.currentTimeMillis() + (1000 / hz) * tempBlinkCount);
                 } else if (System.currentTimeMillis() > tempBlinkTimeout) {
                     this.hz = 0;
                     this.color = this.secondary;
                     tempBlinkCount = 0;
+                    tempBlinkTimeout = 0;
                     update();
                 }
             }
