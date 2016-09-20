@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.Joystick;
 public class HID {
 
     Joystick joystick;
-
+    public static Button UNMAPPED = new Button(-1);
+    public static Axis UNMAPPED_AXIS = new Axis(-1);
     /**
      *
      * @param port
@@ -19,6 +20,9 @@ public class HID {
     }
 
     public boolean button(Button button) {
+        if (button == UNMAPPED) {
+            return false;
+        }
         if (button instanceof AxisButton) {
             AxisButton axis = (AxisButton) button;
             return axis(axis.axis) * (axis.direction ? 1 : -1) > 0.2;
@@ -27,6 +31,9 @@ public class HID {
     }
 
     public double axis(Axis axis) {
+        if (axis == UNMAPPED_AXIS) {
+            return 0;
+        }
         if (axis instanceof POVAxis) {
             POVAxis pov = (POVAxis) axis;
             double povDirection = joystick.getPOV(pov.pov);
